@@ -1,53 +1,37 @@
 /*ARRUMAAAAR*/
-
-
-
-import Home from "./components/home/home";
 import React, { Component } from 'react'
-import Button from '@material-ui/core/Button'
+import Login from './components/main/login'
+import Home from './components/main/home'
+import { Switch, Route } from 'react-router-dom'
+import Cadastro from './components/main/cadastro'
+import Relatorio from './components/main/home'
+import Devolucao from './components/main/devolucao'
+import Emprestimo from './components/main/emprestimo'
+import Debitos from './components/main/debito'
 
-import { ButtonLink } from '../components/Botoes'
-import { Container, Form } from '../styles/style'
-import Header from '../components/Header'
-
-	
-class Index extends Component {	
-	render(){
-		return (
-		  <Layout>
-		  	<Container>
-		  		<Form>
-						<input
-						  type="email"
-						  placeholder="Usuário"
-						/>
-						<input
-						  type="password"
-						  placeholder="Senha"
-						/>
-						<Button component={ButtonLink} href="/inicio">
-						  <a>Login</a>
-						</Button>
-					</Form>
-		    </Container>
-		  </Layout>
-		)
-	}
+const layoutStyle = {
+  marginTop: 80,
+  marginLeft:10,
+  marginRight:10,
+  border: '1px solid #DDD'
 }
 
-export default Index;
-
-
-
-// Importando os components necessários da lib react-materialize
-import { Container } from 'react-materialize';
-
-const Main = () => (
-  <main>
-    <Container>
-      <Home />
-    </Container>
-  </main>  
-);
+class Main extends Component{
+	render() {
+		return (
+			<div style={layoutStyle}>
+				<Switch>
+					<Route exact path='/' component={Login}/>
+					<Route path='/home' component={Home}/>
+					<Route path='/cadastro' component={Cadastro}/>
+					<Route path='/emprestimo' component={Emprestimo}/>
+					<Route path='/debitos' component={Debitos}/>
+					<Route path='/devolucao' component={Devolucao}/>
+					<Route path='/relatorio' component={Relatorio}/>
+				</Switch>
+	  	</div>  
+		);
+	}
+}
 
 export default Main;
