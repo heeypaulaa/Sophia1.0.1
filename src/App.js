@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from './components/header';
 import Main from './main';
+require('./modelo/db.js');
 
 class App extends Component {
   render() {

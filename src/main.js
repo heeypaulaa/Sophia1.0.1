@@ -1,4 +1,4 @@
-/*ARRUMAAAAR*/
+/*pode se considerar um controller*/
 import React, { Component } from 'react'
 import Login from './components/main/login'
 import Home from './components/main/home'
