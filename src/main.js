@@ -4,6 +4,9 @@ import Login from './components/main/login'
 import Home from './components/main/home'
 import { Switch, Route } from 'react-router-dom'
 import Cadastro from './components/main/cadastro'
+import Usuario from './components/main/cadastros/usuario'
+import Calendario from './components/main/cadastros/calendario'
+import Exemplar from './components/main/cadastros/exemplar'
 import Relatorio from './components/main/home'
 import Devolucao from './components/main/devolucao'
 import Emprestimo from './components/main/emprestimo'
@@ -24,6 +27,9 @@ class Main extends Component{
 					<Route exact path='/' component={Login}/>
 					<Route path='/home' component={Home}/>
 					<Route path='/cadastro' component={Cadastro}/>
+						<Route path='/cadUsuario' component={Usuario}/>
+						<Route path='/cadExemplar' component={Exemplar}/>
+						<Route path='/cadCalendario' component={Calendario}/>
 					<Route path='/emprestimo' component={Emprestimo}/>
 					<Route path='/debitos' component={Debitos}/>
 					<Route path='/devolucao' component={Devolucao}/>

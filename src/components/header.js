@@ -11,6 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import { Link } from 'react-router-dom'
 //import Logo from '../logo.png'
 
 
@@ -18,8 +19,8 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 class Header extends Component {
   state = {
     anchorEl: null,
-  	expanded: 'panel1',
-  	openL: true, 
+  	openL1: false, 
+  	openL2: false, 
   };
 
   handleChange = panel => (event, expanded) => {
@@ -30,8 +31,11 @@ class Header extends Component {
 
   handleClick = event => {
   	const id = event.target.id;
- 		if(id === "list"){
- 			this.setState(state => ({ openL: !state.openL }));
+ 		if(id === "list1"){
+ 			this.setState(state => ({ openL1: !state.openL1 }));
+ 		}
+ 		if(id === "list2"){
+ 			this.setState(state => ({ openL2: !state.openL2 }));
  		}
  		else {
     	this.setState({ anchorEl: event.currentTarget });
@@ -67,30 +71,67 @@ class Header extends Component {
 		            onKeyDown={this.handleClose}
 		          >
 			        	<List>
-			        		<ListItem button id = "list" onClick={this.handleClick}>
-					          Inbox
-					          {this.state.openL ? <ExpandLess /> : <ExpandMore />}
+			        		<ListItem button id = "list1" onClick={this.handleClick}>
+					          Cadastro
+					          {this.state.openL1 ? <ExpandLess /> : <ExpandMore />}
 					        </ListItem>
-					        <Collapse in={this.state.openL} timeout="auto" unmountOnExit>
+					        <Collapse in={this.state.openL1} timeout="auto" unmountOnExit>
+					          <List >
+					          	<Link to="/cadUsuario"> 
+					            	<ListItem button >
+					              	<ListItemText inset primary="Usuário" />
+					            	</ListItem>
+					            </Link>
+					            
+					            <Link to="/cadExemplar"> 
+					            	<ListItem button >
+					            		<ListItemText inset primary="Exemplar"/>
+					            	</ListItem>
+					            </Link>
+					            <Link to="/cadCalendario"> 
+					            	<ListItem button >
+					              	<ListItemText inset primary="Calendário" />
+					            	</ListItem>
+					            </Link>
+					          </List>
+					        </Collapse>
+
+					        <ListItem button id = "list2" onClick={this.handleClick}>
+					          Relatório
+					          {this.state.openL2 ? <ExpandLess /> : <ExpandMore />}
+					        </ListItem>
+					        <Collapse in={this.state.openL2} timeout="auto" unmountOnExit>
 					          <List >
 					            <ListItem button >
-
-					              <ListItemText inset primary="Starred" />
+					              <ListItemText inset primary="Mês" />
+					            </ListItem>
+					            <ListItem button >
+					              <ListItemText inset primary="Dia" />
+					            </ListItem>
+					            <ListItem button >
+					              <ListItemText inset primary="Por Exemplar" />
+					            </ListItem>
+					            <ListItem button >
+					              <ListItemText inset primary="Geral" />
 					            </ListItem>
 					          </List>
 					        </Collapse>
 
-
-
-			        		<ListItem button >
-			        			Débitos
-			        		</ListItem>
-			        		<ListItem button >
-			        			Empréstimo
-									</ListItem>
-									<ListItem button >
-			        			Devolução
-			      			</ListItem>
+					        <Link to='/debitos'>
+				        		<ListItem button >
+				        			<ListItemText primary='Débitos'/>
+				        		</ListItem>
+			        		</Link>
+			        		<Link to='/emprestimo'>
+				        		<ListItem button >
+				        			<ListItemText primary='Empréstimo'/>
+										</ListItem>
+									</Link>
+									<Link to='/devolucao'>
+										<ListItem button >
+				        			<ListItemText primary='Devolução'/>
+				      			</ListItem>
+			      			</Link>
 						    </List>
 		          </div>
 		        </Drawer>

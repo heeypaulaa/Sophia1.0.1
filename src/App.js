@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Header from './components/header';
 import Main from './main';
-require('./modelo/db.js');
+import axios from 'axios';
+
 
 class App extends Component {
   render() {
