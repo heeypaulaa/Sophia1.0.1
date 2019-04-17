@@ -3,11 +3,21 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { Container, Form } from '../../../styles/style'
+import Switch from '@material-ui/core/Switch'
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 
 const styles = theme => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
+    width: '50%',
+    border: '1px solid #DDD',
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -135,21 +145,29 @@ const UF = [
 
 class CadUsuario extends Component {	
 	state = {
-    name: null,
-    nasc: null,
-    estado: null,
-    cidade: null,
-    bairro: null,
+    name: '',
+    nasc: '',
+    estado: '',
+    cidade: '',
+    bairro: '',
+    senha: '',
+    admin: false,
+    showPassword: false,
     nasc: "1949-01-01",
     multiline: 'Controlled',
     estado: 'Minas Gerais',
   };
 
   handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
-    console.log("mudou");
+    this.setState({ [name]: event.target.value });
+  };
+
+  handleSwitchChange = name => event => {
+  	this.setState({ [name]: event.target.checked });
+  } 
+
+  handleClickShowPassword = () => {
+    this.setState(state => ({ showPassword: !state.showPassword }));
   };
 
 	render(){
@@ -159,143 +177,175 @@ class CadUsuario extends Component {
 		  	<h4> 
 		  		Cadastro Usuário
 		  	</h4>
-		
-		  	<form className={classes.container} noValidate autoComplete="off">
-	        <TextField
-	          id="nome"
-	          label="Nome Completo"
-	          className={classes.textField}
-	          type="text"
-	          onChange={this.handleChange('name')}
-	          margin="normal"
-	          variant="outlined"
-	        />
+		  	<Container>
+			  	<Form></Form>
+			  	<form className={classes.container} noValidate autoComplete="off">
+		        <TextField
+		          id="nome"
+		          label="Nome Completo"
+		          className={classes.textField}
+		          type="text"
+		          onChange={this.handleChange('name')}
+		          margin="normal"
+		          variant="outlined"
+		          fullWidth="true"
+		        />
 
-	        <TextField
-	          id="nasc"
-	          label="Nascimento"
-	          className={classes.textField}
-	          type="date"
-	          value={this.state.nasc}
-	          onChange={this.handleChange('nasc')}
-	          margin="normal"
-	          variant="outlined"
-	        />
+		        <TextField
+		          id="nasc"
+		          label="Nascimento"
+		          className={classes.textField}
+		          type="date"
+		          value={this.state.nasc}
+		          onChange={this.handleChange('nasc')}
+		          margin="normal"
+		          variant="outlined"
+		        />
 
-	        <TextField
-	          id="rg"
-	          label="RG"
-	          className={classes.textField}
-	          type="text"
-	          onChange={this.handleChange('name')}
-	          margin="normal"
-	          variant="outlined"
-	        />
+		        <TextField
+		          id="rg"
+		          label="RG"
+		          className={classes.textField}
+		          type="text"
+		          onChange={this.handleChange('name')}
+		          margin="normal"
+		          variant="outlined"
+		        />
 
-	        <TextField
-	          id="cpf"
-	          label="CPF"
-	          className={classes.textField}
-	          type="text"
-	          onChange={this.handleChange('name')}
-	          margin="normal"
-	          variant="outlined"
-	        />
+		        <TextField
+		          id="cpf"
+		          label="CPF"
+		          className={classes.textField}
+		          type="text"
+		          onChange={this.handleChange('name')}
+		          margin="normal"
+		          variant="outlined"
+		        />
 
-	        <TextField
-	          id="mae"
-	          label="Nome da Mãe"
-	          className={classes.textField}
-	          type="text"
-	          onChange={this.handleChange('name')}
-	          margin="normal"
-	          variant="outlined"
-	        />
+		        <FormControlLabel
+		          control={
+		            <Switch
+		              checked={this.state.admin}
+		              onChange={this.handleSwitchChange('admin')}
+		              value="admin"
+		              color="primary"
+		            />
+		          }
+		          label="Administrador"
+		        />
 
-	        <TextField
-	          id="tel"
-	          label="Telefone"
-	          className={classes.textField}
-	          type="text"
-	          onChange={this.handleChange('name')}
-	          margin="normal"
-	          variant="outlined"
-	        />
+		        <TextField
+		          id="mae"
+		          label="Nome da Mãe"
+		          className={classes.textField}
+		          type="text"
+		          onChange={this.handleChange('name')}
+		          margin="normal"
+		          fullWidth="true"
+		          variant="outlined"
+		        />
 
-	        <TextField
-	          id="outlined-email-input"
-	          label="Email"
-	          className={classes.textField}
-	          type="email"
-	          name="email"
-	          autoComplete="email"
-	          margin="normal"
-	          variant="outlined"
-	        />
+		        <TextField
+		          id="tel"
+		          label="Telefone"
+		          className={classes.textField}
+		          type="text"
+		          onChange={this.handleChange('name')}
+		          margin="normal"
+		          variant="outlined"
+		        />
 
-	        <TextField
-	          id="endereco"
-	          label="Endereço"
-	          className={classes.textField}
-	          type="text"
-	          onChange={this.handleChange('name')}
-	          margin="normal"
-	          variant="outlined"
-	        />
+		        <TextField
+		          id="outlined-email-input"
+		          label="Email"
+		          className={classes.textField}
+		          type="email"
+		          name="email"
+		          autoComplete="email"
+		          margin="normal"
+		          variant="outlined"
+		        />
 
-	        <TextField
-	          id="tel"
-	          label="Telefone"
-	          className={classes.textField}
-	          type="text"
-	          onChange={this.handleChange('name')}
-	          margin="normal"
-	          variant="outlined"
-	        />
+		        <TextField
+		          id="endereco"
+		          label="Endereço"
+		          className={classes.textField}
+		          type="text"
+		          onChange={this.handleChange('name')}
+		          margin="normal"
+		          fullWidth="true"
+		          variant="outlined"
+		        />
 
-	        <TextField
-	          id="bairro"
-	          label="Bairro"
-	          className={classes.textField}
-	          type="text"
-	          onChange={this.handleChange('bairro')}
-	          margin="normal"
-	          variant="outlined"
-	        />
+		        <TextField
+		          id="bairro"
+		          label="Bairro"
+		          className={classes.textField}
+		          type="text"
+		          onChange={this.handleChange('bairro')}
+		          margin="normal"
+		          variant="outlined"
+		        />
 
-	        <TextField
-	          id="cid"
-	          label="Cidade"
-	          className={classes.textField}
-	          type="text"
-	          onChange={this.handleChange('cidade')}
-	          margin="normal"
-	          variant="outlined"
-	        />
-		  		
-		  		<TextField
-	          id="outlined-select-currency"
-	          select
-	          label="Select"
-	          className={classes.textField}
-	          value={this.state.estado}
-	          onChange={this.handleChange('estado')}
-	          SelectProps={{
-	            MenuProps: {
-	              className: classes.menu,
-	            },
-	          }}
-	          helperText="Selecione o Estado"
-	          margin="normal"
-	          variant="outlined"
-	        >
-	          {UF.map(option => (
-	            <MenuItem key={option.value} value={option.value}>
-	              {option.label}
-	            </MenuItem>
-	          ))}
-	        </TextField>
-		  	</form>
+		        <TextField
+		          id="cid"
+		          label="Cidade"
+		          className={classes.textField}
+		          type="text"
+		          onChange={this.handleChange('cidade')}
+		          margin="normal"
+		          variant="outlined"
+		        />
+			  		
+			  		<TextField
+		          id="outlined-select-currency"
+		          select
+		          label="UF"
+		          className={classes.textField}
+		          value={this.state.estado}
+		          onChange={this.handleChange('estado')}
+		          SelectProps={{
+		          	native: true,
+		            MenuProps: {
+		              className: classes.menu,
+		            },
+		          }}
+		          helperText="Selecione o Estado"
+		          margin="normal"
+		          variant="outlined"
+		        >
+		          {UF.map(option => (
+		            <option key={option.value} value={option.value}>
+		              {option.label}
+		            </option>
+		          ))}
+		        </TextField>
+
+		        <TextField
+		          id="senha"
+		          className={classes.textField}
+		          variant="outlined"
+		          type={this.state.showPassword ? 'text' : 'password'}
+		          label="Senha"
+		          margin="normal"
+		          value={this.state.senha}
+		          onChange={this.handleChange('senha')}
+		          InputProps={{
+		            endAdornment: (
+		              <InputAdornment position="end">
+		                <IconButton
+		                  aria-label="Toggle password visibility"
+		                  onClick={this.handleClickShowPassword}
+		                >
+		                  {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+		                </IconButton>
+		              </InputAdornment>
+		            ),
+		          }}
+		        />
+
+			  	</form>
+		  	</Container>
 		  </div>
 		)
 	}

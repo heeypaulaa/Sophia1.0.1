@@ -17,11 +17,11 @@ import { Link } from 'react-router-dom'
 
 
 class Header extends Component {
-  state = {
-    anchorEl: null,
-  	openL1: false, 
-  	openL2: false, 
-  };
+	state = {
+		anchorEl: null,
+		openL1: false, 
+		openL2: false, 
+	};
 
   handleChange = panel => (event, expanded) => {
     this.setState({

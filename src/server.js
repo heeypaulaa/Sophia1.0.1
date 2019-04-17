@@ -24,10 +24,10 @@ mongoose.connect(
 
 let db = mongoose.connection;
 
-db.once("open", () => console.log("connected to the database"));
+db.once("open", () => console.log("Conectado ao Banco de Dados"));
 
 // checks if connection with the database is successful
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
+db.on("error", console.error.bind(console, "ERROR! Flaha na conexão ao MongoDB"));
 
 // (optional) only made for logging and
 // bodyParser, parses the request body to be a readable json format
@@ -74,7 +74,7 @@ router.post("/putData", (req, res) => {
   if ((!id && id !== 0) || !message) {
     return res.json({
       success: false,
-      error: "INVALID INPUTS"
+      error: "ENTRADA INVALIDA"
     });
   }
   data.message = message;

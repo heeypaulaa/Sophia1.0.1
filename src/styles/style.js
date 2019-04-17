@@ -4,7 +4,8 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 80vh;
+  border: 1px solid #DDD;
 `;
 
 
@@ -15,6 +16,7 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: 1px solid #DDD;
   img {
     width: 100px;
     margin: 10px 0 40px;
@@ -44,10 +46,10 @@ export const Form = styled.form`
     color: #fff;
     font-size: 16px;
     background: turquoise;
-    height: 56px;
-    border: 0;
+    height: 70px;
+    border: 1;
     border-radius: 5px;
-    width: 100%;
+    width: 200px;
   }
   hr {
     margin: 20px 0;
