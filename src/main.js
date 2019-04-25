@@ -1,16 +1,16 @@
 /*pode se considerar um controller*/
 import React, { Component } from 'react'
-import Login from './components/main/login'
-import Home from './components/main/home'
+import Login from './visao/main/login'
+import Home from './visao/main/home'
 import { Switch, Route } from 'react-router-dom'
-import Cadastro from './components/main/cadastro'
-import Usuario from './components/main/cadastros/usuario'
-import Calendario from './components/main/cadastros/calendario'
-import Exemplar from './components/main/cadastros/exemplar'
-import Relatorio from './components/main/home'
-import Devolucao from './components/main/devolucao'
-import Emprestimo from './components/main/emprestimo'
-import Debitos from './components/main/debito'
+import Cadastro from './visao/main/cadastro'
+import Usuario from './visao/main/cadastros/usuario'
+import Calendario from './visao/main/cadastros/calendario'
+import Exemplar from './visao/main/cadastros/exemplar'
+import Relatorio from './visao/main/home'
+import Devolucao from './visao/main/devolucao'
+import Emprestimo from './visao/main/emprestimo'
+import Debitos from './visao/main/debito'
 
 const layoutStyle = {
   marginTop: 80,

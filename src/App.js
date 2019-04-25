@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Header from './components/header';
+import Header from './visao/header';
 import Main from './main';
 import axios from 'axios';
 
