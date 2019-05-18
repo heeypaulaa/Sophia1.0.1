@@ -1,15 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// this will be our data base's data structure 
-const DataSchema = new Schema(
-  {
-    id: Number,
-    message: String
-  },
-  { timestamps: true }
-);
-
 const DataUsu = new Schema(
 	{
 		usu_ID: Number,
@@ -41,33 +32,6 @@ const DataUsu = new Schema(
 				exeID: Number
 			}
 		]
-	}
-);
+	});
 
-const DataExe = new Schema(
-	{
-		exe_ID: Number,
-		exe_RFID: String,
-		exe_Titulo: String,
-		exe_SubTitulo: String,
-		exe_Autor: String,
-		exe_Edicao: String,
-		exe_Editora: String,
-		exe_NumPaginas: Number,
-		exe_Valor: Number, 
-		exe_Ano: Number,
-		exe_ISBN: Number,
-		exe_Area: String,
-		exe_Emprestado: Boolean, 
-		exe_Historico:[ 
-			{
-				usuID: Number,
-				dataHoraEmp: Date,
-				dataHoraDev: Date
-			}
-		]
-	}
-);
-
-// export the new Schema so we could modify it using Node.js
-module.exports = mongoose.model("Data", DataSchema);
+module.exports = mongoose.model('DataUsu', DataUsu);

@@ -16,7 +16,7 @@ const layoutStyle = {
   marginTop: 80,
   marginLeft:10,
   marginRight:10,
-  border: '1px solid #DDD'
+  border: 'none' //'1px solid #DDD'
 }
 
 class Main extends Component{

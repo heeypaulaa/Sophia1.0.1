@@ -46,7 +46,7 @@ class CadUsuario extends Component {
 		return (
 		  <div>
 		  	<h4> 
-		  		Cadastro Usuário
+		  		Cadastro Exemplar
 		  	</h4>
 		  	<Container>
 			  	<Form></Form>

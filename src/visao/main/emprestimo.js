@@ -24,10 +24,14 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import theme from '../../styles/index.js'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 let counter = 0;
-function createData(titulo, autor, edicao, editora, ano) {
+function createData(titulo, autor, edicao, editora, ano,) {
   counter += 1;
+  console.log('counter '+counter);
   return { id: counter, titulo, autor, edicao, editora, ano };
 }
 
@@ -72,42 +76,44 @@ class EnhancedTableHead extends Component {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
 
     return (
-      <TableHead>
-        <TableRow>
-          <TableCell padding="checkbox">
-            <Checkbox
-              indeterminate={numSelected > 0 && numSelected < rowCount}
-              checked={numSelected === rowCount}
-              onChange={onSelectAllClick}
-            />
-          </TableCell>
-          {rows.map(
-            row => (
-              <TableCell
-                key={row.id}
-                align={row.numeric ? 'right' : 'left'}
-                padding={row.disablePadding ? 'none' : 'default'}
-                sortDirection={orderBy === row.id ? order : false}
-              >
-                <Tooltip
-                  title="Sort"
-                  placement={row.numeric ? 'bottom-end' : 'bottom-start'}
-                  enterDelay={300}
+      <MuiThemeProvider theme={theme}>
+        <TableHead>
+          <TableRow>
+            <TableCell padding="checkbox">
+              <Checkbox
+                indeterminate={numSelected > 0 && numSelected < rowCount}
+                checked={numSelected === rowCount}
+                onChange={onSelectAllClick}
+              />
+            </TableCell>
+            {rows.map(
+              row => (
+                <TableCell
+                  key={row.id}
+                  align={row.numeric ? 'right' : 'left'}
+                  padding={row.disablePadding ? 'none' : 'default'}
+                  sortDirection={orderBy === row.id ? order : false}
                 >
-                  <TableSortLabel
-                    active={orderBy === row.id}
-                    direction={order}
-                    onClick={this.createSortHandler(row.id)}
+                  <Tooltip
+                    title="Sort"
+                    placement={row.numeric ? 'bottom-end' : 'bottom-start'}
+                    enterDelay={300}
                   >
-                    {row.label}
-                  </TableSortLabel>
-                </Tooltip>
-              </TableCell>
-            ),
-            this,
-          )}
-        </TableRow>
-      </TableHead>
+                    <TableSortLabel
+                      active={orderBy === row.id}
+                      direction={order}
+                      onClick={this.createSortHandler(row.id)}
+                    >
+                      {row.label}
+                    </TableSortLabel>
+                  </Tooltip>
+                </TableCell>
+              ),
+              this,
+            )}
+          </TableRow>
+        </TableHead>
+      </MuiThemeProvider>
     );
   }
 }
@@ -150,39 +156,41 @@ let EnhancedTableToolbar = props => {
   const { numSelected, classes } = props;
 
   return (
-    <Toolbar
-      className={classNames(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-    >
-      <div className={classes.title}>
-        {numSelected > 0 ? (
-          <Typography color="inherit" variant="subtitle1">
-            {numSelected} selecionado(s)
-          </Typography>
-        ) : (
-          <Typography variant="h6" id="tableTitle">
-            Mochila
-          </Typography>
-        )}
-      </div>
-      <div className={classes.spacer} />
-      <div className={classes.actions}>
-        {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton aria-label="Delete">
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Delete" >
-            <IconButton disabled="true" aria-label="Delete">
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        )}
-      </div>
-    </Toolbar>
+    <MuiThemeProvider theme={theme}>
+      <Toolbar
+        className={classNames(classes.root, {
+          [classes.highlight]: numSelected > 0,
+        })}
+      >
+        <div className={classes.title}>
+          {numSelected > 0 ? (
+            <Typography color="inherit" variant="subtitle1">
+              {numSelected} selecionado(s)
+            </Typography>
+          ) : (
+            <Typography variant="h6" id="tableTitle">
+              Mochila
+            </Typography>
+          )}
+        </div>
+        <div className={classes.spacer} />
+        <div className={classes.actions}>
+          {numSelected > 0 ? (
+            <Tooltip title="Delete">
+              <IconButton aria-label="Delete">
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <Tooltip title="Delete" >
+              <IconButton disabled="true" aria-label="Delete">
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+        </div>
+      </Toolbar>
+      </MuiThemeProvider>
   );
 };
 
@@ -225,14 +233,16 @@ const styles = theme => ({
 
 class EnhancedTable extends Component {
   state = {
+    add: false,
   	open: false,
+    addLivro: false,
     order: 'asc',
     orderBy: 'calories',
     selected: [],
     data: [
       createData('Redes de Computadores', 'Andrew S Tanenbaum, David Wetheral', 5, 'Pearson', 2007),
       createData('Inteligencia artificial', 'George F Luger', '6', 'Pearson', 2011),
-      createData('Sistemas Operacionais Modernos', 'Andrew S Tanenbaum', 3, 'Pearson', 2009),
+      //createData('Sistemas Operacionais Modernos', 'Andrew S Tanenbaum', 3, 'Pearson', 2009),
       /*createData('Sistemas Digitais principios e aplicacoes', 'Ronald J Tocci, Neal S Widmer, Gregory L Moss', 11, 'Pearson', 2009),
       createData('Compiladores principios tecnicas e ferramentas', 'Alfred V Aho, Monica S Lam, Ravi Sethi, Jeffrey D Ullman', 2, 'Pearson', 2011),
       createData('Engenharia de Controle Moderno', 'Katsuhiko Ogata', 4, 'Pearson', 2000),
@@ -286,7 +296,7 @@ class EnhancedTable extends Component {
   };
   
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({ open: false, addLivro: false, });
   };
 
   handleClickFinaliza = () => {
@@ -295,9 +305,17 @@ class EnhancedTable extends Component {
     });
   };
 
-  handleChangePage = (event, page) => {
-    this.setState({ page });
+  handleChangeRows = () => {
+    if (counter >= 3){
+      this.setState({add: true});
+    }
   };
+
+  handleAdd = () => {
+    this.setState({
+      addLivro: true,
+    });
+  }
 
   handleChangeRowsPerPage = event => {
     this.setState({ rowsPerPage: event.target.value });
@@ -305,98 +323,129 @@ class EnhancedTable extends Component {
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
+  addL = (data) => data === 3;
+
   render() {
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    const addL = this.addL(data.length);
 
     return (
-      <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} />
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
-              onRequestSort={this.handleRequestSort}
-              rowCount={data.length}
-            />
-            <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
-                  const isSelected = this.isSelected(n.id);
-                  return (
-                    <TableRow
-                      hover
-                      onClick={event => this.handleClick(event, n.id)}
-                      role="checkbox"
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n.id}
-                      selected={isSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
-                      </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        {n.titulo}
-                      </TableCell>
-                      <TableCell align="left">{n.autor}</TableCell>
-                      <TableCell align="right">{n.edicao}</TableCell>
-                      <TableCell align="left">{n.editora}</TableCell>
-                      <TableCell align="right">{n.ano}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        <Button variant="contained" color="secondary" className={classNames(classes.button, classes.cancela)}>
-	        <DeleteIcon/>
-	        Cancela
-	      </Button>
+      <MuiThemeProvider theme={theme}>
+        <Paper className={classes.root}>
+          <EnhancedTableToolbar numSelected={selected.length} />
+          <div className={classes.tableWrapper}>
+            <Table className={classes.table} aria-labelledby="tableTitle">
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={this.handleSelectAllClick}
+                onRequestSort={this.handleRequestSort}
+                rowCount={data.length}
+              />
+              <TableBody>
+                {stableSort(data, getSorting(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(n => {
+                    const isSelected = this.isSelected(n.id);
+                    return (
+                      <TableRow
+                        hover
+                        onClick={event => this.handleClick(event, n.id)}
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        tabIndex={-1}
+                        key={n.id}
+                        selected={isSelected}
+                        //onChange={event => this.handleChangeRows()}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox checked={isSelected} />
+                        </TableCell>
+                        <TableCell component="th" scope="row" padding="none">
+                          {n.titulo}
+                        </TableCell>
+                        <TableCell align="left">{n.autor}</TableCell>
+                        <TableCell align="right">{n.edicao}</TableCell>
+                        <TableCell align="left">{n.editora}</TableCell>
+                        <TableCell align="right">{n.ano}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 49 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <Button variant="contained" color="secondary" className={classNames(classes.button, classes.cancela)}>
+  	        <DeleteIcon/>
+  	        Cancela
+  	      </Button>
 
-{/* BOTÃO FINALIZA */}
-        <Button onClick={this.handleClickFinaliza} variant="contained" color="primary" className={classNames(classes.button, classes.finaliza)}>
-	        <SaveIcon/>
-	        Finalizar
-	      </Button>
-	       <Dialog
-          onClose={this.handleClose}
-          aria-labelledby="customized-dialog-title"
-          open={this.state.open}
-        >
-          <DialogTitle id="customized-dialog-title">
-            Comprovante de Empréstimo
-          </DialogTitle>
-          <DialogContent>
-            <Typography gutterBottom>
-              Caso queira enviar o recibo para seu e-mail, clique no botão "Enviar Comprovante", ou "OK"  para fechar.
-            </Typography>
-          </DialogContent>
-          <DialogActions>
-          	<Button onClick={this.handleClose} color="primary">
-              Enviar Comprovante
-            </Button>
-            <Button onClick={this.handleClose} color="primary">
-              OK
-            </Button>
-          </DialogActions>
-        </Dialog>
+  {/* BOTÃO FINALIZA */}
+          <Button onClick={this.handleClickFinaliza} variant="contained" color="primary" className={classNames(classes.button, classes.finaliza)}>
+  	        <SaveIcon/>
+  	        Finalizar
+  	      </Button>
+          <Dialog
+            onClose={this.handleClose}
+            aria-labelledby="customized-dialog-title"
+            open={this.state.open}
+          >
+            <DialogTitle id="customized-dialog-title">
+              Comprovante de Empréstimo
+            </DialogTitle>
+            <DialogContent>
+              <Typography gutterBottom>
+                Caso queira enviar o recibo para seu e-mail, clique no botão "Enviar Comprovante", ou "OK"  para fechar.
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+            	<Button onClick={this.handleClose} color="primary">
+                Enviar Comprovante
+              </Button>
+              <Button onClick={this.handleClose} color="primary">
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
 
-{/* BOTÃO ADICIONA */}
-				<Fab color="primary" marginLeft = "100" aria-label="Add" className={classes.add}>
-					<AddIcon desabled="true"/>
-				</Fab>
-      </Paper>
+  {/* BOTÃO ADICIONA */}
+  				<Fab disabled={addL} 
+            color="primary" marginLeft = "100" 
+            aria-label="Add" className={classes.add}
+            onClick={this.handleAdd}
+          >
+  					<AddIcon />
+  				</Fab>
+          <Dialog
+            onClose={this.handleClose}
+            aria-labelledby="customized-dialog-title"
+            open={this.state.addLivro}
+          >
+            <DialogTitle id="customized-dialog-title">
+              Leitura da Tag do Livro
+            </DialogTitle>
+            <DialogContent>
+              <CircularProgress disableShrink />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Cancela
+              </Button>
+              <Button onClick={this.handleClose} color="primary">
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Paper>
+       </MuiThemeProvider>
+
     );
   }
 }

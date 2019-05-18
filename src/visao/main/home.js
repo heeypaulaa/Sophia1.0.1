@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Button from '@material-ui/core/Button'
 import { Container, Form } from '../../styles/style'
 import { Link } from 'react-router-dom'
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import theme from '../../styles/index.js'
 
 const div = {
 	height: '100px',
@@ -12,7 +14,7 @@ const div = {
 class Home extends Component {	
 	render(){
 		return (
-		  <div>
+		  <MuiThemeProvider theme={theme}>
 			  <Container>
 					<Form>
 						<div style={div}>
@@ -39,16 +41,16 @@ class Home extends Component {
 					</Form>
 
 					<Form>
-						<div style={div}>
-							<Link  to="/cadastro">
-								<Button variant="contained" size="large" color="primary">
+						<div style={div}disabled={true}>
+							<Link  to="/cadastro" >
+								<Button variant="contained" size="large" color="primary" disabled={true}>
 									Cadastro
 								</Button>
 							</Link>
 						</div>
 						<div style={div}>
 							<Link to="/relatorio">
-								<Button variant="contained" size="large" color="primary">
+								<Button variant="contained" size="large" color="primary" disabled={true}>
 									Relatórios
 								</Button>
 							</Link>
@@ -56,7 +58,7 @@ class Home extends Component {
 						<div style={div}></div>
 					</Form>
 				</Container>
-    	</div>
+    	</MuiThemeProvider>
   	)
   }
 }

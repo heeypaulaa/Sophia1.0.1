@@ -21,9 +21,9 @@ class Calendario extends Component {
 		return (
 			<div>
 		  	<h4> 
-		  		Cadastro Calendário
+		  		Cadastro de Calendário
 		  	</h4>
-		  	<p> Selectione o intervalo de dias que NÃO irá funcionar a Biblioteca, durante todo o ano (1º de Janeiro á 31 de Dezembro).</p>
+		  	<p> Selecione o intervalo de dias que NÃO irá funcionar a Biblioteca, durante todo o ano (1º de Janeiro á 31 de Dezembro).</p>
 		  	<form className={classes.container} noValidate>
 		      <TextField
 		        id="inicio"
