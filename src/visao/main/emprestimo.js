@@ -382,6 +382,7 @@ class EnhancedTable extends Component {
               </TableBody>
             </Table>
           </div>
+          
           <Button variant="contained" color="secondary" className={classNames(classes.button, classes.cancela)}>
   	        <DeleteIcon/>
   	        Cancela

@@ -57,18 +57,18 @@ class CadUsuario extends Component {
 		          label="Título"
 		          className={classes.textField}
 		          type="text"
-		          onChange={this.handleChange('name')}
+		          onChange={this.handleChange('titulo')}
 		          margin="normal"
 		          variant="outlined"
 		          fullWidth="true"
 		        />
 
 		        <TextField
-		          id="sub"
+		          id="subTit"
 		          label="SubTítulo"
 		          className={classes.textField}
 		          type="text"
-		          onChange={this.handleChange('name')}
+		          onChange={this.handleChange('subTit')}
 		          margin="normal"
 		          variant="outlined"
 		        />
@@ -79,18 +79,18 @@ class CadUsuario extends Component {
 		          label="Autor(es)"
 		          className={classes.textField}
 		          type="text"
-		          onChange={this.handleChange('nasc')}
+		          onChange={this.handleChange('autor')}
 		          margin="normal"
 		          variant="outlined"
 		        />
 
 		        <TextField
 		        	required
-		          id="ed"
+		          id="edicao"
 		          label="Edição"
 		          className={classes.textField}
 		          type="text"
-		          onChange={this.handleChange('name')}
+		          onChange={this.handleChange('edicao')}
 		          margin="normal"
 		          variant="outlined"
 		        />
@@ -101,7 +101,7 @@ class CadUsuario extends Component {
 		          label="Editora"
 		          className={classes.textField}
 		          type="text"
-		          onChange={this.handleChange('name')}
+		          onChange={this.handleChange('editora')}
 		          margin="normal"
 		          variant="outlined"
 		        />
@@ -112,7 +112,29 @@ class CadUsuario extends Component {
 		          label="Ano"
 		          className={classes.textField}
 		          type="text"
-		          onChange={this.handleChange('name')}
+		          onChange={this.handleChange('ano')}
+		          margin="normal"
+		          variant="outlined"
+		        />
+
+		        <TextField
+		        	required
+		          id="isbn"
+		          label="ISBN"
+		          className={classes.textField}
+		          type="text"
+		          onChange={this.handleChange('isbn')}
+		          margin="normal"
+		          variant="outlined"
+		        />
+
+		        <TextField
+		        	required
+		          id="numPag"
+		          label="numPag"
+		          className={classes.textField}
+		          type="number"
+		          onChange={this.handleChange('numPag')}
 		          margin="normal"
 		          variant="outlined"
 		        />
@@ -128,24 +150,24 @@ class CadUsuario extends Component {
 		          variant="outlined"
 		        />
 
-		        <TextField
-		        	required
-		        	select
-		          id="area"
-		          label="area"
-		          className={classes.textField}
-		          type="text"
-		          onChange={this.handleChange('name')}
-		          margin="normal"
-		          variant="outlined"
-		        />
 			  	</form>
 		  	</Container>
 		  </div>
 		)
 	}
 }
-
+/*exe_RFID: String,
+		
+		exe_Valor: Number, 
+		exe_Emprestado: Boolean, 
+		exe_Historico:[ 
+			{
+				usuID: Number,
+				dataHoraEmp: Date,
+				dataHoraDev: Date
+			}
+		]
+	}*/
 CadUsuario.propTypes = {
   classes: PropTypes.object.isRequired,
 };

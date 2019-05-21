@@ -15,7 +15,6 @@ const DataUsu = new Schema(
 		usu_ID: Number,
 		usu_Nome: String,
 		usu_Nasc: Date,
-		usu_RG: String,
 		usu_CPF: {type: String, match: /\d{3}.\d{3}.\d{3}-\d{2}/},
 		usu_Tel: {type: String, match: /\d{2}-\d{4}-\d{4}/},
 		usu_Endereco: String,
@@ -57,7 +56,6 @@ const DataExe = new Schema(
 		exe_Valor: Number, 
 		exe_Ano: Number,
 		exe_ISBN: Number,
-		exe_Area: String,
 		exe_Emprestado: Boolean, 
 		exe_Historico:[ 
 			{

@@ -1,23 +1,42 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import theme from '../../../styles/index.js';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import SaveIcon from '@material-ui/icons/Save';
+import MaskedInput from 'react-text-mask';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import FormControl from '@material-ui/core/FormControl';
 
+import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { Container, Form } from '../../../styles/style'
-import Switch from '@material-ui/core/Switch'
+import { Container, Form } from '../../../styles/style';
+import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
+import { connect } from 'react-redux';
+import { Provider } from 'react-redux';
+
+import store from '../../../store/index';
+import FormUsu from './FormUsu'
+
+const mapStateToProps = state => {
+    return { usus: state}
+};
 
 const styles = theme => ({
   container: {
-    display: 'flex',
     flexWrap: 'wrap',
     width: '50%',
-    border: '1px solid #DDD',
+    border: 'none',
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -28,6 +47,16 @@ const styles = theme => ({
   },
   menu: {
     width: 200,
+  },
+  cancela: {
+  	bottom: 20,
+    position: 'fixed',
+    left: 20,
+  },
+  finaliza: {
+  	bottom: 20,
+    position: 'fixed',
+    left: theme.spacing.unit * 20,
   },
 });
 
@@ -142,209 +171,151 @@ const UF = [
 	},  
 ];
 
+function TextMaskCustom(props) {
+  const { inputRef, ...other } = props;
+
+  return (
+    <MaskedInput
+      {...other}
+      ref={ref => {
+        inputRef(ref ? ref.inputElement : null);
+      }}
+      mask={['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+      placeholderChar={'\u2000'}
+      showMask
+    />
+  );
+}
+
+TextMaskCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired,
+};
 
 class CadUsuario extends Component {	
-	state = {
-    name: '',
-    cidade: '',
-    bairro: '',
-    senha: '',
-    admin: false,
-    showPassword: false,
-    nasc: "1949-01-01",
-    multiline: 'Controlled',
-    estado: 'Minas Gerais',
+	/*state = {
+	/*	nome: '',
+		cidade: '',
+		bairro: '',
+		senha: '',
+		admin: false,
+		nasc: "1949-01-01",
+		estado: 'Minas Gerais',
+		cpf: '',
+		nomeMae: '',
+		tel: '(  )     -    ',
+		email: '',
+		end: '',
+		bloq: false,*/
+
+		/*usu: [
+			{id: 'nome', value: ''},
+			{id: 'cidade', value: ''},
+			{id: 'bairro', value: ''},
+			{id: 'senha', value: ''},
+			{id: 'admin', value: false},
+			{id: 'nasc', value: "1949-01-01"},
+			{id: 'estado', value: 'Minas Gerais'},
+			{id: 'cpf', value: ''},
+			{id: 'nomeMae', value: ''},
+			{id: 'tel', value: ''},
+			{id: 'email', value: ''},
+			{id: 'end', value: ''},
+			{id: 'bloq', value: false},
+    ],*/
+    /*usu: [
+    	{
+				id: 1, 
+				nome: 'Fulano',
+				cidade: '', value: '',
+				bairro: '',
+				senha: '',
+				admin: false,
+				nasc: "1949-01-01",
+				estado: 'Minas Gerais',
+				cpf: '',
+				nomeMae: '',
+				tel: '',
+				email: '',
+				end: '',
+				bloq: false,
+			},
+    ]
+  };*/
+
+  handleChange = id => event => {
+  	this.setState({ [id]: event.target.value });
   };
 
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
-  };
-
-  handleSwitchChange = name => event => {
-  	this.setState({ [name]: event.target.checked });
+  handleSwitchChange = id => event => {
+  	this.setState({ [id]: event.target.checked });
   } 
 
-  handleClickShowPassword = () => {
-    this.setState(state => ({ showPassword: !state.showPassword }));
-  };
+  
 
 	render(){
 		const { classes } = this.props;
+		//const { tel } = this.state;
+
 		return (
-		  <div>
+		  <MuiThemeProvider theme={theme}>
 		  	<h4> 
 		  		Cadastro Usuário
 		  	</h4>
 		  	<Container>
 			  	<Form></Form>
-			  	<form className={classes.container} noValidate autoComplete="off">
-		        <TextField
-		          id="nome"
-		          label="Nome Completo"
-		          className={classes.textField}
-		          type="text"
-		          onChange={this.handleChange('name')}
-		          margin="normal"
-		          variant="outlined"
-		          fullWidth="true"
-		        />
+			  	<Provider store={store}>
+			  		<FormUsu />
+			  	</Provider>
 
-		        <TextField
-		          id="nasc"
-		          label="Nascimento"
-		          className={classes.textField}
-		          type="date"
-		          value={this.state.nasc}
-		          onChange={this.handleChange('nasc')}
-		          margin="normal"
-		          variant="outlined"
-		        />
 
-		        <TextField
-		          id="rg"
-		          label="RG"
-		          className={classes.textField}
-		          type="text"
-		          onChange={this.handleChange('name')}
-		          margin="normal"
-		          variant="outlined"
-		        />
+			  	<Link to="/home"> 
+			  		<Button variant="contained" 
+				  		color="secondary" 
+				  		className={classNames(classes.button, classes.cancela)}
+				  	>
+  	        	<DeleteIcon/>
+  	        		Cancela
+  	      	</Button>
+  	      </Link>
 
-		        <TextField
-		          id="cpf"
-		          label="CPF"
-		          className={classes.textField}
-		          type="text"
-		          onChange={this.handleChange('name')}
-		          margin="normal"
-		          variant="outlined"
-		        />
+  {/* BOTÃO FINALIZA 
+          <Button onClick={this.handleClickFinaliza} variant="contained" color="primary" className={classNames(classes.button, classes.finaliza)}>
+  	        <SaveIcon/>
+  	        Salvar
+  	      </Button>*/}
+          {/*<Dialog
+            onClose={this.handleClose}
+            aria-labelledby="customized-dialog-title"
+            open={this.state.open}
+          >
+            <DialogTitle id="customized-dialog-title">
+              Comprovante de Empréstimo
+            </DialogTitle>
+            <DialogContent>
+              <Typography gutterBottom>
+                Caso queira enviar o recibo para seu e-mail, clique no botão "Enviar Comprovante", ou "OK"  para fechar.
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+            	<Button onClick={this.handleClose} color="primary">
+                Enviar Comprovante
+              </Button>
+              <Button onClick={this.handleClose} color="primary">
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>*/}
 
-		        <FormControlLabel
-		          control={
-		            <Switch
-		              checked={this.state.admin}
-		              onChange={this.handleSwitchChange('admin')}
-		              value="admin"
-		              color="primary"
-		            />
-		          }
-		          label="Administrador"
-		        />
-
-		        <TextField
-		          id="mae"
-		          label="Nome da Mãe"
-		          className={classes.textField}
-		          type="text"
-		          onChange={this.handleChange('name')}
-		          margin="normal"
-		          fullWidth="true"
-		          variant="outlined"
-		        />
-
-		        <TextField
-		          id="tel"
-		          label="Telefone"
-		          className={classes.textField}
-		          type="text"
-		          onChange={this.handleChange('name')}
-		          margin="normal"
-		          variant="outlined"
-		        />
-
-		        <TextField
-		          id="outlined-email-input"
-		          label="Email"
-		          className={classes.textField}
-		          type="email"
-		          name="email"
-		          autoComplete="email"
-		          margin="normal"
-		          variant="outlined"
-		        />
-
-		        <TextField
-		          id="endereco"
-		          label="Endereço"
-		          className={classes.textField}
-		          type="text"
-		          onChange={this.handleChange('name')}
-		          margin="normal"
-		          fullWidth="true"
-		          variant="outlined"
-		        />
-
-		        <TextField
-		          id="bairro"
-		          label="Bairro"
-		          className={classes.textField}
-		          type="text"
-		          onChange={this.handleChange('bairro')}
-		          margin="normal"
-		          variant="outlined"
-		        />
-
-		        <TextField
-		          id="cid"
-		          label="Cidade"
-		          className={classes.textField}
-		          type="text"
-		          onChange={this.handleChange('cidade')}
-		          margin="normal"
-		          variant="outlined"
-		        />
-			  		
-			  		<TextField
-		          id="outlined-select-currency"
-		          select
-		          label="UF"
-		          className={classes.textField}
-		          value={this.state.estado}
-		          onChange={this.handleChange('estado')}
-		          SelectProps={{
-		          	native: true,
-		            MenuProps: {
-		              className: classes.menu,
-		            },
-		          }}
-		          helperText="Selecione o Estado"
-		          margin="normal"
-		          variant="outlined"
-		        >
-		          {UF.map(option => (
-		            <option key={option.value} value={option.value}>
-		              {option.label}
-		            </option>
-		          ))}
-		        </TextField>
-
-		        <TextField
-		          id="senha"
-		          className={classes.textField}
-		          variant="outlined"
-		          type={this.state.showPassword ? 'text' : 'password'}
-		          label="Senha"
-		          margin="normal"
-		          value={this.state.senha}
-		          onChange={this.handleChange('senha')}
-		          InputProps={{
-		            endAdornment: (
-		              <InputAdornment position="end">
-		                <IconButton
-		                  aria-label="Toggle password visibility"
-		                  onClick={this.handleClickShowPassword}
-		                >
-		                  {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-		                </IconButton>
-		              </InputAdornment>
-		            ),
-		          }}
-		        />
-
-			  	</form>
+  {/* BOTÃO ADICIONA 
+  				<Fab disabled={addL} 
+            color="primary" marginLeft = "100" 
+            aria-label="Add" className={classes.add}
+            {/*onClick={this.handleAdd}/}
+          >
+  					<AddIcon />
+  				</Fab>*/}
 		  	</Container>
-		  </div>
+		  </MuiThemeProvider>
 		)
 	}
 }
@@ -353,4 +324,5 @@ CadUsuario.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
+//connect(mapStateToProps);
 export default withStyles(styles)(CadUsuario);
