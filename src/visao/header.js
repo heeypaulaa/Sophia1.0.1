@@ -6,15 +6,15 @@ import IconButton from '@material-ui/core/IconButton';
 import IconHome from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
 import Printer from '@material-ui/icons/Print';
-import People from '@material-ui/icons/People';
-import Today from '@material-ui/icons/CalendarToday';
-import ViewDay from '@material-ui/icons/ViewDaySharp';
+// import People from '@material-ui/icons/People';
+// import Today from '@material-ui/icons/CalendarToday';
+// import ViewDay from '@material-ui/icons/ViewDaySharp';
 import Payment from '@material-ui/icons/Payment';
 import Add from '@material-ui/icons/Add';
 import Remove from '@material-ui/icons/Remove';
 
 
-import Book from '@material-ui/icons/Book';
+// import Book from '@material-ui/icons/Book';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -23,9 +23,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import Menu from '@material-ui/core/Menu';
+// import AccountCircle from '@material-ui/icons/AccountCircle';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from '../styles/index.js'
 import { Link } from 'react-router-dom'
@@ -84,8 +84,8 @@ class Header extends Component {
   render() {
     const { auth, anchorEl, anchorEl2 } = this.state;
     const open = Boolean(anchorEl);
-    const openL2 = Boolean(anchorEl2);
-    const { classes } = this.props;
+    // const openL2 = Boolean(anchorEl2);
+    // const { classes } = this.props;
     
     return (
       <MuiThemeProvider theme={theme}>

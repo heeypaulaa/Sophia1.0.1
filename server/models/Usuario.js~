@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 const DataUsu = new Schema({
 	usu_Nome: String,
 	usu_Nasc: Date,
-	usu_Tel: String, //match: /(\d{2})\d{4}-\d{4}/},
-	usu_CPF: String, //match: /\d{3}.\d{3}.\d{3}-\d{2}/},
+	usu_Tel: {type: String, match: /(\d{2})\d{4}-\d{4}/},
+	usu_CPF: {type: String, match: /\d{3}.\d{3}.\d{3}-\d{2}/},
 	usu_Endereco: String,
 	usu_Bairro: String,
 	usu_Cidade: String,
@@ -18,7 +18,7 @@ const DataUsu = new Schema({
 	usu_PosseQuant: {type: Number, min: 0, max: 3},
 	usu_ExemplarPosse: [
 		{
-			exeID: String,
+			exeID: Number,
 			devolucao: Date
 		}
 	],
@@ -26,7 +26,7 @@ const DataUsu = new Schema({
 		{
 			dataHoraEmp: Date,
 			dataHoraDev: Date,
-			exeID: String
+			exeID: Number
 		}
 	]
 });

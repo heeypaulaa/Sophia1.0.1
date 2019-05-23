@@ -1,4 +1,4 @@
-import { createStore } from 'redux';
+/*import { createStore } from 'redux';
 
 
 //import rootReducer from '../reducers';
@@ -31,7 +31,7 @@ const ESTADO_INICIAL = {
 
 
 /* state= antes da alteracao,  action=acao a ser feita*/
-function reducer(state = ESTADO_INICIAL, action) {
+/*function reducer(state = ESTADO_INICIAL, action) {
 	console.log(action);
 	return state;
 };
@@ -39,4 +39,4 @@ function reducer(state = ESTADO_INICIAL, action) {
 
 const store = createStore(reducer);
 
-export default store;
+export default store;*/

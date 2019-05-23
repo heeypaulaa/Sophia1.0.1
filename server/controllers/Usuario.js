@@ -9,7 +9,9 @@ module.exports = {
 		let usuario = new Usuario(req.body);
 
 		usuario.save()
-			.then(usuario => res.status(200).json(usuario))
+			.then(usuario => {
+				res.status(200).json(usuario);
+			})
 			.catch(err => {
 				res.status(400).send("Erro ao adicionar Usuario " + err)
 			});
@@ -48,6 +50,18 @@ module.exports = {
 	//  Error(400): Return an error msg
 	deleteUsu: function (req, res) {
 		Usuario.findByIdAndRemove(req.params.id, function (err, usuarios) {
+			if (err) {
+				res.status(400).send("Erro ao deletar esta registro " + err);
+			}
+			else {
+				res.status(200).json(req.params.id);
+			}
+		});
+	},
+
+
+	deleteOneUsu: function (req, res) {
+		Usuario.find(req.params.id, function (err, usuarios) {
 			if (err) {
 				res.status(400).send("Erro ao deletar esta registro " + err);
 			}

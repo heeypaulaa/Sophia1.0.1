@@ -1,4 +1,6 @@
 const express = require('express');
+const app = express();
+
 const Exemplar = express.Router();
 
 const controllers = require('../controllers/Exemplar');
