@@ -66,7 +66,7 @@ class CadUsuario extends Component {
 		return (
 		  <MuiThemeProvider theme={theme}>
 		  	<h4> 
-		  		Cadastro Exemplar
+		  		Cadastro de Exemplar
 		  	</h4>
 		  	<Container>
 			  	<Form></Form>
@@ -74,12 +74,7 @@ class CadUsuario extends Component {
 				  		<CreateExe />
 				  	</Provider>
 
-						<Link to="/home"> 
-				  		<Button variant="contained" color="secondary" className={classNames(classes.button, classes.cancela)} >
-	  	        	<DeleteIcon/>
-	  	        		Cancela
-	  	      	</Button>
-	  	      </Link>
+						
 		        {/*<TextField
 		        	required
 		          id="titulo"

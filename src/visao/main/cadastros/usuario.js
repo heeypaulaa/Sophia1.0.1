@@ -110,7 +110,7 @@ class CadUsuario extends Component {
 		return (
 		  <MuiThemeProvider theme={theme}>
 		  	<h4> 
-		  		Cadastro Usuário
+		  		Cadastro de Usuário
 		  	</h4>
 		  	<Container>
 			  	<Form></Form>

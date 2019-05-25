@@ -169,7 +169,7 @@ let EnhancedTableToolbar = props => {
             </Typography>
           ) : (
             <Typography variant="h6" id="tableTitle">
-              Mochila
+              Empréstimo
             </Typography>
           )}
         </div>

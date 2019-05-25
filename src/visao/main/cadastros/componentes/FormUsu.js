@@ -13,6 +13,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
+import { Link } from 'react-router-dom';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 //import { connect } from 'react-redux';
 //import { createUsu } from '../../../actions/index'
@@ -212,6 +214,7 @@ class FormUsu extends Component{
     	this.state.usu_Bairro.trim() && this.state.usu_Senha.trim() &&
     	this.state.usu_Nasc.trim() && this.state.usu_Estado.trim() && 
     	this.state.usu_Tel.trim() && this.state.usu_Email.trim() && this.state.usu_Endereco.trim()){
+      
       //console.log(this.state);
       this.props.onAddUsu(this.state);
       //this.handleReset();
@@ -229,49 +232,49 @@ class FormUsu extends Component{
 		return (
 
 			<form onSubmit={ this.handleSubmit } style={layoutStyle} noValidate autoComplete="off">
+				<div>
 			  	<Fragment>
-				  	<TextField style={{marginRight: 10}}
-					    // key={usu.id}
-					    value={this.state.usu_Nome}
-					    label="Nome Completo"
-					    //>className={classes.textField}
-					    type="text"
-					    name='usu_Nome'
-					    onChange={ this.handleInputChange }
-					    margin="normal"
-					    variant="outlined"
-					    fullWidth
-					  />
+			  		<FormControl required margin="normal" fullWidth>
+					    <InputLabel htmlFor="formatted-text-mask-input">Nome</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	required 
+					    	name='usu_Nome'
+					    	value={this.state.usu_Nome}
+					    	id="usu_Nome"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					    />
+					  </FormControl>
 
-					  <TextField style={{marginRight: 10}}
-					    // key={usu.id}
-					    value={this.state.usu_Mae}
-					    label="Nome da Mãe"
-					    //>className={classes.textField}
-					    type="text"
-					    name='usu_Mae'
-					    onChange={ this.handleInputChange }
-					    margin="normal"
-					    variant="outlined"
-					    fullWidth
-					  />
-				  
-					  <TextField style={{marginRight: 10}}
-					    // key={usu.id}
-					    label="Nascimento"
-					    //>className={classes.textField}
-					    type="date"
-					    name='usu_Nasc'
-					    value={this.state.usu_Nasc}
-					    onChange={ this.handleInputChange }
-					    margin="normal"
-					    variant="outlined"
-					  />
+					  <FormControl margin="normal" fullWidth>
+					    <InputLabel required htmlFor="formatted-text-mask-input">Nome da Mãe</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	required 
+					    	name='usu_Mae'
+					    	value={this.state.usu_Mae}
+					    	id="usu_Mae"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					    />
+					  </FormControl>
+
+					  <FormControl margin="normal">
+					    <InputLabel required htmlFor="formatted-text-mask-input">Nascimento</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	required 
+					    	name='usu_Nasc'
+					    	value={this.state.usu_Nasc}
+					    	id="usu_Nasc"
+					    	type="date"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					    />
+					  </FormControl>
 
 					  <FormControl variant="outlined" margin="normal">
-					    <InputLabel htmlFor="formatted-text-mask-input">CPF</InputLabel>
-					    <Input style={{marginRight: 10}}
-					    	// key={usu.id}
+					    <InputLabel required htmlFor="formatted-text-mask-input">CPF</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	required 
 					    	name='usu_CPF'
 					      value={this.state.usu_CPF}
 					      onChange={ this.handleInputChange }
@@ -281,7 +284,32 @@ class FormUsu extends Component{
 					    />
 					  </FormControl>
 
-					  <FormControlLabel style={{marginRight: 10}}
+					  {/* <FormControlLabel style={{marginRight: 10}} */}
+					  {/* 	// key={usu.id} */}
+					  {/* 	name='usu_Bloqueado' */}
+					  {/*   control={ */}
+					  {/*     <Switch */}
+					  {/*       onChange={this.handleSwitchChange('usu_Bloqueado')} */}
+					  {/*       color="primary" */}
+					  {/*     /> */}
+					  {/*   } */}
+					  {/*   margin="normal" */}
+					  {/*   label="Bloqueado" */}
+					  {/* /> */}
+
+					  <FormControl variant="outlined" margin="normal">
+					    <InputLabel htmlFor="formatted-text-mask-input">Telefone</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	name='usu_Tel'
+					      value={this.state.usu_Tel}
+					      onChange={ this.handleInputChange }
+					      id="usu_Tel"
+					      inputComponent={TextMaskCustom}
+					      disableUnderline
+					    />
+					  </FormControl>
+
+					  <FormControlLabel style={{marginRight: 20, marginTop: 20}}
 					  	// key={usu.id}
 					  	name='usu_Admin'
 					    control={
@@ -295,72 +323,44 @@ class FormUsu extends Component{
 					    label="Administrador"
 					  />
 
-					  <FormControlLabel style={{marginRight: 10}}
-					  	// key={usu.id}
-					  	name='usu_Bloqueado'
-					    control={
-					      <Switch
-					        onChange={this.handleSwitchChange('usu_Bloqueado')}
-					        color="primary"
-					      />
-					    }
-					    margin="normal"
-					    label="Bloqueado"
-					  />
-
-					  <FormControl variant="outlined" margin="normal">
-					    <InputLabel htmlFor="formatted-text-mask-input">Telefone</InputLabel>
-					    <Input style={{marginRight: 10}}
-					    	// key={usu.id}
-					    	name='usu_Tel'
-					      value={this.state.usu_Tel}
-					      onChange={ this.handleInputChange }
-					      id="usu_Tel"
-					      inputComponent={TextMaskCustom}
+					  <FormControl margin="normal" fullWidth>
+					    <InputLabel required htmlFor="formatted-text-mask-input">Endereço</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	required 
+					    	name='usu_Endereco'
+					    	value={this.state.usu_Endereco}
+					    	id="usu_Endereco"
+					    	onChange={ this.handleInputChange }
 					      disableUnderline
 					    />
 					  </FormControl>
 
+					  <FormControl margin="normal" >
+					    <InputLabel required htmlFor="formatted-text-mask-input">Bairro</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	required 
+					    	name='usu_Bairro'
+					    	value={this.state.usu_Bairro}
+					    	id="usu_Bairro"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					    />
+					  </FormControl>
 
-					  <TextField style={{marginRight: 10}}
-					    // key={usu.id}
-					    label="Endereço"
-					    //>className={classes.textField}
-					    type="text"
-					    name='usu_Endereco'
-					    value = {this.state.usu_Endereco}
-					    onChange={ this.handleInputChange }
-					    margin="normal"
-					    fullWidth
-					    variant="outlined"
-					  />
-
-					  <TextField style={{marginRight: 10}}
-					    // key={usu.id}
-					    label="Bairro"
-					    //>className={classes.textField}
-					    type="text"
-					    name='usu_Bairro'
-					    value={this.state.usu_Bairro}
-					    onChange={ this.handleInputChange }
-					    margin="normal"
-					    variant="outlined"
-					  />
-
-					  <TextField style={{marginRight: 10}}
-					    // key={usu.id}
-					    label="Cidade"
-					    //>className={classes.textField}
-					    type="text"
-					    name='usu_Cidade'
-					    value={this.state.usu_Cidade}
-					    onChange={ this.handleInputChange }
-					    margin="normal"
-					    variant="outlined"
-					  />
+					  <FormControl margin="normal" >
+					    <InputLabel required htmlFor="formatted-text-mask-input">Cidade</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	required 
+					    	name='usu_Cidade'
+					    	value={this.state.usu_Cidade}
+					    	id="usu_Cidade"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					    />
+					  </FormControl>
 						
-						<TextField style={{marginRight: 10}}
-							// key={usu.id}
+						<TextField style={{marginRight: 20}}
+							required 
 					    select
 					    label="UF"
 					    //>className={classes.textField}
@@ -384,16 +384,17 @@ class FormUsu extends Component{
 					    ))}
 					  </TextField>
 
-					  <TextField style={{marginRight: 10}}
-					    variant="outlined"
-					    type={this.state.showPassword ? 'text' : 'password'}
-					    label="Senha"
-					    margin="normal"
-					    name='usu_Senha'
-					    value={this.state.usu_Senha}
-					    onChange={ this.handleInputChange }
-					    InputProps={{
-					      endAdornment: (
+					  <FormControl margin="normal" >
+					    <InputLabel required htmlFor="formatted-text-mask-input">Senha</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	required 
+					    	type={this.state.showPassword ? 'text' : 'password'}
+						    label="Senha"
+						    margin="normal"
+						    name='usu_Senha'
+						    value={this.state.usu_Senha}
+						    onChange={ this.handleInputChange }
+						    endAdornment={
 					        <InputAdornment position="end">
 					          <IconButton
 					            aria-label="Toggle password visibility"
@@ -402,29 +403,52 @@ class FormUsu extends Component{
 					            {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
 					          </IconButton>
 					        </InputAdornment>
-					      ),
-					    }}
-					  />
+						    }
+					      disableUnderline
+					    />
+					  </FormControl>
 
-					  <TextField style={{marginRight: 10}}
-					    //key={usu.id}
-					    label="Email"
-					    //>className={classes.textField}
-					    type="email"
-					    name="usu_Email"
-					    margin="normal"
-					    variant="outlined"
-					    fullWidth
-					    onChange={ this.handleInputChange }
-					  />
-					  <Button type="submit"  variant="contained" color="primary" position="end"
-					  	//className={classNames(classes.button, classes.finaliza)}
-					  >
-	  	        <SaveIcon/>
-	  	        Salvar
-	  	      </Button>
+					  <FormControl margin="normal" fullWidth>
+					    <InputLabel htmlFor="formatted-text-mask-input">E-mail</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	name='usu_Email'
+					    	value={this.state.usu_Email}
+					    	id="usu_Email"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					    />
+					  </FormControl>
+
+					  {/* <Button type="submit"  variant="contained" color="primary" position="end" */}
+					  {/* 	//className={classNames(classes.button, classes.finaliza)} */}
+					  {/* > */}
+	  	   {/*      <SaveIcon/> */}
+	  	   {/*      Salvar */}
+	  	   {/*    </Button> */}
 				  </Fragment>
-				  {/*))}*/}
+				  <Link to="/home"> 
+					  <Button variant="contained" color="secondary" 
+					  	style={{
+  							bottom: 20,
+						    position: 'fixed',
+						    left: 20,
+						  }}
+					  >
+			  	   	<DeleteIcon/>
+			  	   		Cancela
+			  	   	</Button>
+			  	</Link>
+			  	<Button type="submit"  variant="contained" 
+			  		color="primary" position="end"
+			  		style={{
+  							bottom: 20,
+						    position: 'fixed',
+						    left: 150,
+						  }}>
+  	        <SaveIcon/>
+  	        Salva
+  	      </Button>
+				</div>
 			</form>
 		);
 

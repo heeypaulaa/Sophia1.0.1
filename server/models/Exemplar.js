@@ -2,14 +2,15 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const DataExe = new Schema({
+	exe_RFID: String,
 	exe_Titulo: String,
 	exe_SubTitulo: String,
 	exe_Autor: String,
-	exe_Edicao: String,
+	exe_Edicao: Number,
 	exe_Editora: String,
 	exe_NumPaginas: Number,
 	exe_Ano: Number,
-	exe_ISBN: Number,
+	exe_ISBN: String,
 	exe_Emprestado: Boolean, 
 	exe_Historico:[ 
 		{

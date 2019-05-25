@@ -13,6 +13,15 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
+import { Link } from 'react-router-dom';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+// Load the TCP Library
+const net = require('net');
+//Porta para conexao
+var porta = 29298;
+// Lista de clientes
+var clientes = [];
 
 //import { connect } from 'react-redux';
 //import { createUsu } from '../../../actions/index'
@@ -24,51 +33,26 @@ const layoutStyle = {
 }
 
 
-// function TextMaskCustom(props) {
-//   const { inputRef, ...other } = props;
-// 
-//   return (
-//     <MaskedInput
-//       {...other}
-//       ref={ref => {
-//         inputRef(ref ? ref.inputElement : null);
-//       }}
-//       mask={['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
-//       placeholderChar={'\u2000'}
-//       showMask
-//     />
-//   );
-// }
-// 
-// function TextMaskCPF(props) {
-//   const { inputRef, ...other } = props;
-// 
-//   return (
-//     <MaskedInput
-//       {...other}
-//       ref={ref => {
-//         inputRef(ref ? ref.inputElement : null);
-//       }}
-//       mask={[/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.',/\d/, /\d/, /\d/, '-', /\d/, /\d/]}
-//       placeholderChar={'\u2000'}
-//       showMask
-//     />
-//   );
-// }
-// 
-// TextMaskCPF.propTypes = {
-//   inputRef: PropTypes.func.isRequired,
-// };
-// 
-// TextMaskCustom.propTypes = {
-//   inputRef: PropTypes.func.isRequired,
-// };
+//function lerRFID() {
+	// Inicia o TCP Server
+// const rfidtag = net.createServer(function (socket) {
+// 	  // Listener de requisicoes dos clientes 
+// 	  socket.on('data', function (data) {   
+// 	    // broadcast(data,socket);
+// 	    console.log("\n data:::"+data);
+// 	    return(data);
+// 	  });
+// 	 
+// 	}).listen(porta);
+// 	 
+
 
 
 
 class FormExe extends Component{
 	state = { 
 		exe_Titulo: '',
+		exe_RFID: '[98, 35, 154, 31, 196]',
 		exe_SubTitulo: '',
 		exe_Autor: '',
 		exe_Edicao: '',
@@ -95,11 +79,11 @@ class FormExe extends Component{
     e.preventDefault();
     if (this.state.exe_Titulo.trim() && this.state.exe_Autor.trim() && 
     	this.state.exe_Edicao.trim() && this.state.exe_Editora.trim() && 
-    	this.state.exe_NumPaginas.trim() && this.state.exe_Ano.trim() && 
-    	this.state.exe_ISBN.trim()){
+    	this.state.exe_Ano.trim() && 
+    	this.state.exe_ISBN.trim() && this.state.exe_RFID.trim()){
     	//console.log('mudou');
       console.log(this.state);
-      //this.props.onAddExe(this.state);
+      this.props.onAddExe(this.state);
       //this.handleReset();
     }
   };
@@ -108,57 +92,33 @@ class FormExe extends Component{
 	render() {
 
 		return (
-
+			
 			<form onSubmit={ this.handleSubmit } style={layoutStyle} noValidate autoComplete="off">
+				<div>
 			  	<Fragment>
-				  	<TextField style={{marginRight: 10}}
-					    value={this.state.exe_Titulo}
-					    label="Título"
-					    type="text"
-					    name='exe_Titulo'
-					    onChange={ this.handleInputChange }
-					    margin="normal"
-					    variant="outlined"
-					    fullWidth
-					  />
-
-					  <TextField style={{marginRight: 10}}
-					    value={this.state.exe_SubTitulo}
-					    label="Sub Titulo"
-					    type="text"
-					    name='exe_SubTitulo'
-					    onChange={ this.handleInputChange }
-					    margin="normal"
-					    variant="outlined"
-					    fullWidth
-					  />
-
-					  <TextField style={{marginRight: 10}}
-					    label="Autor"
-					    type="text"
-					    name='exe_Autor'
-					    value={this.state.exe_Autor}
-					    onChange={ this.handleInputChange }
-					    margin="normal"
-					    fullWidth
-					    variant="outlined"
-					  />
-
-					  <FormControlLabel style={{marginRight: 10}}
-					  	name='exe_Emprestado'
-					    control={
-					      <Switch
-					        onChange={this.handleSwitchChange('exe_Emprestado')}
-					        color="primary"
-					      />
-					    }
-					    margin="normal"
-					    label="Emprestado"
-					  />
-
-					  <FormControl variant="outlined" margin="normal">
-					    <InputLabel htmlFor="formatted-text-mask-input">ISBN</InputLabel>
+			  		<FormControl margin="normal" >
+					    <InputLabel required htmlFor="formatted-text-mask-input">Tag RFID</InputLabel>
 					    <Input style={{marginRight: 10}}
+					    	disabled
+					    	required
+					    	name='exe_RFID'
+					    	value = {this.state.exe_RFID}
+					    	id="exe_RFID"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					    />
+					  </FormControl>
+
+					  <Button style={{marginRight: 30, marginTop:30}}
+					  		color="primary" 
+					  		onClick={() => console.log("olaaa RFID")}>
+	  	        Ler Tag
+	  	      </Button>
+
+	  	      <FormControl required margin="normal">
+					    <InputLabel htmlFor="formatted-text-mask-input">ISBN</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	required
 					    	name='exe_ISBN'
 					      value={this.state.exe_ISBN}
 					      onChange={ this.handleInputChange }
@@ -168,52 +128,118 @@ class FormExe extends Component{
 					    />
 					  </FormControl>
 
+	  	      <FormControl required margin="normal" fullWidth>
+					    <InputLabel htmlFor="formatted-text-mask-input">Título</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	name='exe_Titulo'
+					    	required
+					    	value={this.state.exe_Titulo}
+					    	id="exe_Titulo"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					      // focused
+					    />
+					  </FormControl>
 
-					  <TextField style={{marginRight: 10}}
-					    label="Edição"
-					    type="text"
-					    name='exe_Edicao'
-					    value = {this.state.exe_Edicao}
-					    onChange={ this.handleInputChange }
-					    margin="normal"
-					    variant="outlined"
-					  />
+					  <FormControl margin="normal" fullWidth>
+					    <InputLabel htmlFor="formatted-text-mask-input">SubTítulo</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	name='exe_SubTitulo'
+					    	value={this.state.exe_SubTitulo}
+					    	id="exe_SubTitulo"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					    />
+					  </FormControl>
 
-					  <TextField style={{marginRight: 10}}
-					    label="Editora"
-					    type="text"
-					    name='exe_Editora'
-					    value={this.state.exe_Editora}
-					    onChange={ this.handleInputChange }
-					    margin="normal"
-					    variant="outlined"
-					  />
+					  <FormControl margin="normal" fullWidth>
+					    <InputLabel required htmlFor="formatted-text-mask-input">Autor</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	name='exe_Autor'
+					    	required
+					    	value={this.state.exe_Autor}
+					    	id="exe_Autor"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					    />
+					  </FormControl>
 
-					  <TextField style={{marginRight: 10}}
-					    label="Número de Páginas"
-					    type="text"
-					    name='exe_NumPaginas'
-					    value={this.state.exe_NumPaginas}
-					    onChange={ this.handleInputChange }
-					    margin="normal"
-					    variant="outlined"
-					  />
+					  <FormControl margin="normal">
+					    <InputLabel required htmlFor="formatted-text-mask-input">Edição</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	name='exe_Edicao'
+					    	required
+					    	value={this.state.exe_Edicao}
+					    	id="exe_Edicao"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					      type="number"
+					    />
+					  </FormControl>
+
+					  <FormControl margin="normal">
+					    <InputLabel required htmlFor="formatted-text-mask-input">Editora</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	name='exe_Editora'
+					    	required
+					    	value={this.state.exe_Editora}
+					    	id="exe_Editora"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					    />
+					  </FormControl>
+
+					  <FormControl margin="normal" >
+					    <InputLabel htmlFor="formatted-text-mask-input">Número de Páginas</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	name='exe_NumPaginas'
+					    	value={this.state.exe_NumPaginas}
+					    	id="exe_NumPaginas"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					      type="number"
+					    />
+					  </FormControl>
+
+					  <FormControl margin="normal" >
+					    <InputLabel required htmlFor="formatted-text-mask-input">Ano</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	name='exe_Ano'
+					    	required
+					    	value={this.state.exe_Ano}
+					    	id="exe_Ano"
+					    	type="number"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					    />
+					  </FormControl>
 
 
-					  <TextField style={{marginRight: 10}}
-					    label="Ano"
-					    type="text"
-					    name="exe_Ano"
-					    margin="normal"
-					    variant="outlined"
-					    onChange={ this.handleInputChange }
-					  />
-
-					  <Button type="submit"  variant="contained" color="primary" position="end">
-	  	        <SaveIcon/>
-	  	        Salva
-	  	      </Button>
+					  
 				  </Fragment>
+				  <Link to="/home"> 
+					  <Button variant="contained" color="secondary" 
+					  	style={{
+  							bottom: 20,
+						    position: 'fixed',
+						    left: 20,
+						  }}
+					  >
+			  	   	<DeleteIcon/>
+			  	   		Cancela
+			  	   	</Button>
+			  	</Link>
+			  	<Button type="submit"  variant="contained" 
+			  		color="primary" position="end"
+			  		style={{
+  							bottom: 20,
+						    position: 'fixed',
+						    left: 150,
+						  }}>
+  	        <SaveIcon/>
+  	        Salva
+  	      </Button>
+				</div>
 			</form>
 		);
 

@@ -7,7 +7,7 @@ const apiUrlExe = 'http://localhost:3001/api/exe/';
 
 export const createUsu = ({ usu_Nome, usu_Mae, usu_CPF, usu_Nasc, usu_Tel, usu_Endereco, usu_Bairro, usu_Cidade, usu_Estado, usu_Email, usu_Admin, usu_Bloqueado, usu_Senha }) => {
   return (dispatch) => {
-    //console.log('chegou', usu_Nome, usu_Mae, usu_CPF, usu_Nasc, usu_Tel, usu_Endereco, usu_Bairro, usu_Cidade, usu_Estado, usu_Email, usu_Admin, usu_Bloqueado, usu_Senha )
+    
     return axios.post(`${apiUrlUsu}`, { usu_Nome, usu_Mae, usu_CPF, usu_Nasc, usu_Tel, usu_Endereco, usu_Bairro, usu_Cidade, usu_Estado, usu_Email, usu_Admin, usu_Bloqueado, usu_Senha })
       .then(response => {
         dispatch(createUsuSuccess(response.data))
@@ -90,9 +90,9 @@ export const fetchAllUsus = () => {
 
 /*LIVROS*/
 
-export const createExe = ({ exe_Titulo, exe_SubTitulo, exe_Autor, exe_Edicao, exe_Editora, exe_NumPaginas, exe_Ano, exe_ISBN, exe_Emprestado}) => {
+export const createExe = ({ exe_RFID, exe_Titulo, exe_SubTitulo, exe_Autor, exe_Edicao, exe_Editora, exe_NumPaginas, exe_Ano, exe_ISBN, exe_Emprestado}) => {
   return (dispatch) => {
-    return axios.post(`${apiUrlExe}`, { exe_Titulo, exe_SubTitulo, exe_Autor, exe_Edicao, exe_Editora, exe_NumPaginas, exe_Ano, exe_ISBN, exe_Emprestado })
+    return axios.post(`${apiUrlExe}`, { exe_RFID, exe_Titulo, exe_SubTitulo, exe_Autor, exe_Edicao, exe_Editora, exe_NumPaginas, exe_Ano, exe_ISBN, exe_Emprestado })
       .then(response => {
         dispatch(createExeSuccess(response.data))
       })
@@ -107,6 +107,7 @@ export const createExeSuccess =  (data) => {
     type: CREATE_USU,
     payload: {
       _id: data._id, 
+      rfid: data.exe_RFID,
       titulo: data.exe_Titulo, 
       subtitulo: data.exe_SubTitulo, 
       autor: data.exe_Autor, 

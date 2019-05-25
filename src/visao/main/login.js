@@ -6,36 +6,69 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from '../../styles/index.js'
 //import { ButtonLink } from '../components/Botoes'
 import { Container, Form } from '../../styles/style'
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import FormControl from '@material-ui/core/FormControl';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import IconButton from '@material-ui/core/IconButton';
 
 	
 class Login extends Component {	
+	state ={
+		showPassword: false,
+	}
+
+	handleClickShowPassword = () => {
+    this.setState(state => ({ showPassword: !state.showPassword }));
+  };
+
 	render(){
 		return (
 		  <MuiThemeProvider theme={theme}>
 		  	<Container>
-		  		<Form>
-		  			<TextField
-		          id="usuario"
-		          label="Usuário"
-		          margin="normal"
-		          
-		          fullWidth="true"
-						  type="email"
-						/>
-						<TextField
-							id="senha"
-		          label="Senha"
-		          margin="normal"
-		          
-		          fullWidth="true"
-						  type="password"
-						/>
+		  		<form >
+		  			<FormControl margin="normal" >
+					    <InputLabel required htmlFor="formatted-text-mask-input">Senha</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	required 
+					    	type={this.state.showPassword ? 'text' : 'password'}
+						    label="Senha"
+						    margin="normal"
+						    name='usu_Senha'
+						    value={this.state.usu_Senha}
+						    onChange={ this.handleInputChange }
+						    endAdornment={
+					        <InputAdornment position="end">
+					          <IconButton
+					            aria-label="Toggle password visibility"
+					            onClick={this.handleClickShowPassword}
+					          >
+					            {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+					          </IconButton>
+					        </InputAdornment>
+						    }
+					      disableUnderline
+					    />
+					  </FormControl>
+
+					  <FormControl margin="normal" fullWidth>
+					    <InputLabel htmlFor="formatted-text-mask-input">E-mail</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	name='usu_Email'
+					    	value={this.state.usu_Email}
+					    	id="usu_Email"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					    />
+					  </FormControl>
 						<Link to="/home"> 
 							<Button variant="contained" color='primary'>
 							  Login
 							</Button>
 						</Link>
-					</Form>
+					</form>
 		    </Container>
 		  </MuiThemeProvider>
 		)
