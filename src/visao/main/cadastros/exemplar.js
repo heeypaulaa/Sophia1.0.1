@@ -1,19 +1,19 @@
 import React, { Component } from 'react'
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from '../../../styles/index.js';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { Container, Form } from '../../../styles/style'
-import { Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import DeleteIcon from '@material-ui/icons/Delete';
+// import { Link } from 'react-router-dom';
+// import Button from '@material-ui/core/Button';
+// import DeleteIcon from '@material-ui/icons/Delete';
 import CreateExe from '../../../controle/createExe'
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux';
-import{ fetchAllExes } from '../../../actions/index';
+// import{ fetchAllExes } from '../../../actions/index';
 import rootExeReducer from '../../../reducers/rootExeReducer';
 
 
@@ -62,7 +62,7 @@ class CadUsuario extends Component {
   // };
 
 	render(){
-		const { classes } = this.props;
+		// const { classes } = this.props;
 		return (
 		  <MuiThemeProvider theme={theme}>
 		  	<h4> 

@@ -45,6 +45,18 @@ module.exports = {
 		})
 	},
 
+
+	getUsuByCPF: function (req, res) {
+		Usuario.findOne(req.params.usu_CPF, function(err, usuario){
+			if (err) {
+				res.status(400).send("Erro ao pegar este CPF Usuario " + err);
+			}
+			else {
+				res.status(200).json(usuario);
+			}
+		})
+	},
+
 	// Delete usuario (DELETE)
 	//  Success(200): Return the id that was passed
 	//  Error(400): Return an error msg

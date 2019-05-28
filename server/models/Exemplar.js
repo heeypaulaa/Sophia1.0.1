@@ -12,13 +12,13 @@ const DataExe = new Schema({
 	exe_Ano: Number,
 	exe_ISBN: String,
 	exe_Emprestado: Boolean, 
-	exe_Historico:[ 
-		{
-			usuID: Number,
-			dataHoraEmp: Date,
-			dataHoraDev: Date
-		}
-	]
+	exe_Historico:[ {
+		usuID: Number,
+		dataHoraEmp: Date,
+		dataHoraDev: Date
+	}]
+},{
+	collection: 'DataExe'
 });
 
 // export the new Schema so we could modify it using Node.js

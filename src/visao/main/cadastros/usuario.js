@@ -9,10 +9,11 @@ import { Container, Form } from '../../../styles/style';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import CreateUsu from '../../../controle/createUsu'
+
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux';
-import{ fetchAllUsus } from '../../../actions/index';
+// import{ fetchAllUsus } from '../../../actions/index';
 import rootUsuReducer from '../../../reducers/rootUsuReducer';
 
 

@@ -1,5 +1,6 @@
 
-import { CREATE_USU, DELETE_USU, GET_USU, PUT_USU, CREATE_EXE, DELETE_EXE, GET_EXE, PUT_EXE } from './tipos';
+import { CREATE_USU, DELETE_USU, GET_USU, PUT_USU, CREATE_EXE, DELETE_EXE, GET_EXE//, PUT_EXE 
+} from './tipos';
 import axios from 'axios';
 
 const apiUrlUsu = 'http://localhost:3001/api/usu/';
@@ -7,7 +8,6 @@ const apiUrlExe = 'http://localhost:3001/api/exe/';
 
 export const createUsu = ({ usu_Nome, usu_Mae, usu_CPF, usu_Nasc, usu_Tel, usu_Endereco, usu_Bairro, usu_Cidade, usu_Estado, usu_Email, usu_Admin, usu_Bloqueado, usu_Senha }) => {
   return (dispatch) => {
-    
     return axios.post(`${apiUrlUsu}`, { usu_Nome, usu_Mae, usu_CPF, usu_Nasc, usu_Tel, usu_Endereco, usu_Bairro, usu_Cidade, usu_Estado, usu_Email, usu_Admin, usu_Bloqueado, usu_Senha })
       .then(response => {
         dispatch(createUsuSuccess(response.data))
@@ -55,7 +55,7 @@ export const deleteUsuSuccess = id => {
 
 export const deleteUsu = id => {
   return (dispatch) => {
-    return axios.get(`${apiUrlUsu}/delete/${id}`)
+    return axios.get(`${apiUrlUsu}/${id}`)
       .then(response => {
         dispatch(deleteUsuSuccess(response.data))
       })
@@ -67,7 +67,17 @@ export const deleteUsu = id => {
 
 /*GET*/
 //assincrono
+// function searchCPF()
 export const fetchUsus = (usus) => {
+  function funcao(obj){
+    if('usu_CPF' in obj){
+      //if (obj.usu_CPF == "452.071.323-42")
+      console.log(obj.usu_CPF == "452.071.323-42")
+    }
+    //console.log()
+  }
+  usus.forEach(function(usu){
+    console.log("ola" + usus.filter(funcao))});
   return {
     type: GET_USU,
     usus
@@ -83,6 +93,76 @@ export const fetchAllUsus = () => {
       .catch(error => {
         throw(error);
       });
+  };
+};
+
+
+export function updateUsu({ _id, usu_Nome, usu_Mae, usu_CPF, usu_Nasc, usu_Tel, usu_Endereco, usu_Bairro, usu_Cidade, usu_Estado, usu_Email, usu_Admin, usu_Bloqueado, usu_Senha }) {
+  return (dispatch) => {
+    return axios.put(`${apiUrlUsu}/${_id}`, { _id, usu_Nome, usu_Mae, usu_CPF, usu_Nasc, usu_Tel, usu_Endereco, usu_Bairro, usu_Cidade, usu_Estado, usu_Email, usu_Admin, usu_Bloqueado, usu_Senha })
+      .then(res => {
+          dispatch(updateTaskSuccess(res.data));
+      })
+      .catch(err => {
+          throw (err);
+      });
+  };
+};
+
+export function updateTaskSuccess(data) {
+  return {
+      type: PUT_USU,
+      payload: {
+          _id: data._id, 
+      nome: data.usu_Nome, 
+      nomeMae: data.usu_Mae, 
+      nasc: data.usu_Nasc, 
+      tel: data.usu_Tel, 
+      cpf: data.usu_CPF,
+      endereco: data.usu_Endereco, 
+      bairro: data.usu_Bairro, 
+      cidade: data.usu_Cidade, 
+      estato: data.usu_Estado, 
+      email: data.usu_Email, 
+      admin: data.usu_Admin, 
+      bloq: data.usu_Bloqueado, 
+      senha: data.usu_Senha, 
+      posseQuant: data.usu_PosseQuant, 
+      posse: data.usu_ExemplarPosse, 
+      historico: data.usu_Historico
+      }
+  };
+};
+
+
+export const getUsuByID = id => {
+  return (dispatch) => {
+    return axios.get(`${apiUrlUsu}/${id}`)
+      .then(response => {
+        dispatch(getUsuIdSuccess(response.data))
+      })
+      .catch(error => {
+        throw (error);
+      })
+  };
+};
+
+export const getUsuIdSuccess = (usu) => {
+  return {
+    type: GET_USU,
+    usu
+  }
+};
+
+export const getUsuCPF = cpf => {
+  return (dispatch) => {
+    return axios.get(`${apiUrlUsu}/${cpf}`)
+      .then(response => {
+        dispatch(getUsuIdSuccess(response.data))
+      })
+      .catch(error => {
+        throw (error);
+      })
   };
 };
 
@@ -104,7 +184,7 @@ export const createExe = ({ exe_RFID, exe_Titulo, exe_SubTitulo, exe_Autor, exe_
 
 export const createExeSuccess =  (data) => {
   return {
-    type: CREATE_USU,
+    type: CREATE_EXE,
     payload: {
       _id: data._id, 
       rfid: data.exe_RFID,

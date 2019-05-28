@@ -210,10 +210,10 @@ class FormUsu extends Component{
 
   handleSubmit = e => {
     e.preventDefault();
-    if (this.state.usu_Nome.trim() && this.state.usu_Mae.trim() && this.state.usu_Cidade.trim() && 
-    	this.state.usu_Bairro.trim() && this.state.usu_Senha.trim() &&
-    	this.state.usu_Nasc.trim() && this.state.usu_Estado.trim() && 
-    	this.state.usu_Tel.trim() && this.state.usu_Email.trim() && this.state.usu_Endereco.trim()){
+    if (this.state.usu_Nome.trim() && this.state.usu_Mae.trim() && 
+    	this.state.usu_Cidade.trim() && this.state.usu_Bairro.trim() && 
+    	this.state.usu_Senha.trim() && this.state.usu_Nasc.trim() && 
+    	this.state.usu_Estado.trim() && this.state.usu_Endereco.trim()){
       
       //console.log(this.state);
       this.props.onAddUsu(this.state);
@@ -234,7 +234,7 @@ class FormUsu extends Component{
 			<form onSubmit={ this.handleSubmit } style={layoutStyle} noValidate autoComplete="off">
 				<div>
 			  	<Fragment>
-			  		<FormControl required margin="normal" fullWidth>
+			  		<FormControl required fullWidth>
 					    <InputLabel htmlFor="formatted-text-mask-input">Nome</InputLabel>
 					    <Input style={{marginRight: 20}}
 					    	required 
@@ -246,7 +246,7 @@ class FormUsu extends Component{
 					    />
 					  </FormControl>
 
-					  <FormControl margin="normal" fullWidth>
+					  <FormControl fullWidth>
 					    <InputLabel required htmlFor="formatted-text-mask-input">Nome da Mãe</InputLabel>
 					    <Input style={{marginRight: 20}}
 					    	required 
@@ -258,7 +258,7 @@ class FormUsu extends Component{
 					    />
 					  </FormControl>
 
-					  <FormControl margin="normal">
+					  <FormControl>
 					    <InputLabel required htmlFor="formatted-text-mask-input">Nascimento</InputLabel>
 					    <Input style={{marginRight: 20}}
 					    	required 
@@ -271,7 +271,7 @@ class FormUsu extends Component{
 					    />
 					  </FormControl>
 
-					  <FormControl variant="outlined" margin="normal">
+					  <FormControl variant="outlined" >
 					    <InputLabel required htmlFor="formatted-text-mask-input">CPF</InputLabel>
 					    <Input style={{marginRight: 20}}
 					    	required 
@@ -297,7 +297,7 @@ class FormUsu extends Component{
 					  {/*   label="Bloqueado" */}
 					  {/* /> */}
 
-					  <FormControl variant="outlined" margin="normal">
+					  <FormControl variant="outlined">
 					    <InputLabel htmlFor="formatted-text-mask-input">Telefone</InputLabel>
 					    <Input style={{marginRight: 20}}
 					    	name='usu_Tel'
@@ -319,11 +319,10 @@ class FormUsu extends Component{
 					        color="primary"
 					      />
 					    }
-					    margin="normal"
 					    label="Administrador"
 					  />
 
-					  <FormControl margin="normal" fullWidth>
+					  <FormControl fullWidth>
 					    <InputLabel required htmlFor="formatted-text-mask-input">Endereço</InputLabel>
 					    <Input style={{marginRight: 20}}
 					    	required 
@@ -335,7 +334,7 @@ class FormUsu extends Component{
 					    />
 					  </FormControl>
 
-					  <FormControl margin="normal" >
+					  <FormControl >
 					    <InputLabel required htmlFor="formatted-text-mask-input">Bairro</InputLabel>
 					    <Input style={{marginRight: 20}}
 					    	required 
@@ -347,7 +346,7 @@ class FormUsu extends Component{
 					    />
 					  </FormControl>
 
-					  <FormControl margin="normal" >
+					  <FormControl>
 					    <InputLabel required htmlFor="formatted-text-mask-input">Cidade</InputLabel>
 					    <Input style={{marginRight: 20}}
 					    	required 
@@ -374,8 +373,7 @@ class FormUsu extends Component{
 					      },
 					    }}
 					    helperText="Selecione o Estado"
-					    margin="normal"
-					    variant="outlined"
+					    // margin="normal"
 					  >
 					    {UF.map(option => (
 					      <option key={option.value} value={option.value}>
@@ -384,13 +382,12 @@ class FormUsu extends Component{
 					    ))}
 					  </TextField>
 
-					  <FormControl margin="normal" >
+					  <FormControl >
 					    <InputLabel required htmlFor="formatted-text-mask-input">Senha</InputLabel>
 					    <Input style={{marginRight: 20}}
 					    	required 
 					    	type={this.state.showPassword ? 'text' : 'password'}
 						    label="Senha"
-						    margin="normal"
 						    name='usu_Senha'
 						    value={this.state.usu_Senha}
 						    onChange={ this.handleInputChange }
@@ -408,7 +405,7 @@ class FormUsu extends Component{
 					    />
 					  </FormControl>
 
-					  <FormControl margin="normal" fullWidth>
+					  <FormControl fullWidth>
 					    <InputLabel htmlFor="formatted-text-mask-input">E-mail</InputLabel>
 					    <Input style={{marginRight: 20}}
 					    	name='usu_Email'

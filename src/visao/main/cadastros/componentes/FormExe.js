@@ -1,27 +1,27 @@
 import React, { Component, Fragment } from 'react';
-import TextField from '@material-ui/core/TextField';
-import MaskedInput from 'react-text-mask';
+// import TextField from '@material-ui/core/TextField';
+// import MaskedInput from 'react-text-mask';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import PropTypes from 'prop-types';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import IconButton from '@material-ui/core/IconButton';
+// import InputAdornment from '@material-ui/core/InputAdornment';
+// import Visibility from '@material-ui/icons/Visibility';
+// import VisibilityOff from '@material-ui/icons/VisibilityOff';
+// import PropTypes from 'prop-types';
+// import Switch from '@material-ui/core/Switch';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 import { Link } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 // Load the TCP Library
-const net = require('net');
+// const net = require('net');
 //Porta para conexao
-var porta = 29298;
+// var porta = 29298;
 // Lista de clientes
-var clientes = [];
+// var clientes = [];
 
 //import { connect } from 'react-redux';
 //import { createUsu } from '../../../actions/index'

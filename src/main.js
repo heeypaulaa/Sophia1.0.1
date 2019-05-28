@@ -10,7 +10,7 @@ import Exemplar from './visao/main/cadastros/exemplar'
 import Relatorio from './visao/main/home'
 import Devolucao from './visao/main/devolucao'
 import Emprestimo from './visao/main/emprestimo'
-import Debitos from './visao/main/debito'
+import Posse from './visao/main/debito'
 
 const layoutStyle = {
   marginTop: 80,
@@ -31,7 +31,7 @@ class Main extends Component{
 						<Route path='/cadExemplar' component={Exemplar}/>
 						<Route path='/cadCalendario' component={Calendario}/>
 					<Route path='/emprestimo' component={Emprestimo}/>
-					<Route path='/debitos' component={Debitos}/>
+					<Route path='/posse' component={Posse}/>
 					<Route path='/devolucao' component={Devolucao}/>
 					<Route path='/relatorio' component={Relatorio}/>
 				</Switch>

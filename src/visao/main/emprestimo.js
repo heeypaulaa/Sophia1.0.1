@@ -11,8 +11,8 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
+// import Checkbox from '@material-ui/core/Checkbox';
+// import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
@@ -27,8 +27,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from '../../styles/index.js'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+// import MaskedInput from 'react-text-mask';
 
 let counter = 0;
+
 function createData(titulo, autor, edicao, editora, ano,) {
   counter += 1;
   console.log('counter '+counter);
@@ -73,19 +78,15 @@ class EnhancedTableHead extends Component {
   };
 
   render() {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
+    const { //onSelectAllClick, 
+      order, orderBy, 
+      //numSelected, rowCount 
+    } = this.props;
 
     return (
       <MuiThemeProvider theme={theme}>
         <TableHead>
           <TableRow>
-            <TableCell padding="checkbox">
-              <Checkbox
-                indeterminate={numSelected > 0 && numSelected < rowCount}
-                checked={numSelected === rowCount}
-                onChange={onSelectAllClick}
-              />
-            </TableCell>
             {rows.map(
               row => (
                 <TableCell
@@ -162,33 +163,11 @@ let EnhancedTableToolbar = props => {
           [classes.highlight]: numSelected > 0,
         })}
       >
-        <div className={classes.title}>
-          {numSelected > 0 ? (
-            <Typography color="inherit" variant="subtitle1">
-              {numSelected} selecionado(s)
-            </Typography>
-          ) : (
+       
             <Typography variant="h6" id="tableTitle">
               Empréstimo
             </Typography>
-          )}
-        </div>
-        <div className={classes.spacer} />
-        <div className={classes.actions}>
-          {numSelected > 0 ? (
-            <Tooltip title="Delete">
-              <IconButton aria-label="Delete">
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          ) : (
-            <Tooltip title="Delete" >
-              <IconButton disabled="true" aria-label="Delete">
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-        </div>
+         
       </Toolbar>
       </MuiThemeProvider>
   );
@@ -240,7 +219,7 @@ class EnhancedTable extends Component {
     orderBy: 'calories',
     selected: [],
     data: [
-      createData('Redes de Computadores', 'Andrew S Tanenbaum, David Wetheral', 5, 'Pearson', 2007),
+      createData('Redes de Computadores', 'Andrew S Tanenbaum, David Wetheral', 5, 'Pearson', 2011),
       createData('Inteligencia artificial', 'George F Luger', '6', 'Pearson', 2011),
       //createData('Sistemas Operacionais Modernos', 'Andrew S Tanenbaum', 3, 'Pearson', 2009),
       /*createData('Sistemas Digitais principios e aplicacoes', 'Ronald J Tocci, Neal S Widmer, Gregory L Moss', 11, 'Pearson', 2009),
@@ -266,34 +245,7 @@ class EnhancedTable extends Component {
     this.setState({ order, orderBy });
   };
 
-  handleSelectAllClick = event => {
-    if (event.target.checked) {
-      this.setState(state => ({ selected: state.data.map(n => n.id) }));
-      return;
-    }
-    this.setState({ selected: [] });
-  };
 
-  handleClick = (event, id) => {
-    const { selected } = this.state;
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    this.setState({ selected: newSelected });
-  };
   
   handleClose = () => {
     this.setState({ open: false, addLivro: false, });
@@ -321,7 +273,6 @@ class EnhancedTable extends Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
-  isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   addL = (data) => data === 3;
 
@@ -349,21 +300,14 @@ class EnhancedTable extends Component {
                 {stableSort(data, getSorting(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map(n => {
-                    const isSelected = this.isSelected(n.id);
                     return (
                       <TableRow
                         hover
-                        onClick={event => this.handleClick(event, n.id)}
-                        role="checkbox"
-                        aria-checked={isSelected}
                         tabIndex={-1}
                         key={n.id}
-                        selected={isSelected}
                         //onChange={event => this.handleChangeRows()}
                       >
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={isSelected} />
-                        </TableCell>
+                        
                         <TableCell component="th" scope="row" padding="none">
                           {n.titulo}
                         </TableCell>
@@ -403,13 +347,11 @@ class EnhancedTable extends Component {
             </DialogTitle>
             <DialogContent>
               <Typography gutterBottom>
-                Caso queira enviar o recibo para seu e-mail, clique no botão "Enviar Comprovante", ou "OK"  para fechar.
+                Empréstimo realizado com sucesso!
+                Sua data de devolução é 19/04/2019
               </Typography>
             </DialogContent>
             <DialogActions>
-            	<Button onClick={this.handleClose} color="primary">
-                Enviar Comprovante
-              </Button>
               <Button onClick={this.handleClose} color="primary">
                 OK
               </Button>
@@ -432,9 +374,22 @@ class EnhancedTable extends Component {
             <DialogTitle id="customized-dialog-title">
               Leitura da Tag do Livro
             </DialogTitle>
-            <DialogContent>
-              <CircularProgress disableShrink />
+            <DialogContent >
+              <Typography gutterBottom>
+                Aproxime a tag ao leitor ou digite-a de acordo como está no livro
+              </Typography>
+              <CircularProgress  disableShrink />
             </DialogContent>
+              <FormControl variant="outlined" margin="normal">
+              <InputLabel htmlFor="formatted-text-mask-input">Número da tag</InputLabel>
+              <Input style={{marginRight: 20}}
+                name='exe_RFID'
+                value={this.state.exe_RFID}
+                onChange={ this.handleInputChange }
+                id="usu_RFID"
+                disableUnderline
+              />
+            </FormControl>
             <DialogActions>
               <Button onClick={this.handleClose} color="primary">
                 Cancela

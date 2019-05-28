@@ -19,19 +19,17 @@ const DataUsu = new Schema({
 	usu_Bloqueado: Boolean,
 	usu_Senha: { type: String, required: true },
 	usu_PosseQuant: {type: Number, min: 0, max: 3},
-	usu_ExemplarPosse: [
-		{
-			exeID: String,
-			devolucao: Date
-		}
-	],
-	usu_Historico: [
-		{
-			dataHoraEmp: Date,
-			dataHoraDev: Date,
-			exeID: String
-		}
-	]
+	usu_ExemplarPosse: [{
+		exeID: String,
+		devolucao: Date
+	}],
+	usu_Historico: [{
+		dataHoraEmp: Date,
+		dataHoraDev: Date,
+		exeID: String
+	}]
+},{
+	collection: 'DataUsu'
 });
 
 DataUsu.plugin(uniqueValidator);

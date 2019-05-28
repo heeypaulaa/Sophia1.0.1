@@ -7,7 +7,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 
 import rootUsuReducer from './reducers/rootUsuReducer';
-import rootExeReducer from './reducers/rootUsuReducer';
+// import rootExeReducer from './reducers/rootUsuReducer';
 
 import{ fetchAllUsus } from './actions/index';
 //import registerServiceWorker from './registerServiceWorker';
@@ -26,6 +26,6 @@ ReactDOM.render((
 	), document.getElementById('root')
 );
 
-//window.store = storeUsu;
+window.store = storeUsu;
 //window.addUsu = addUsu;
 //registerServiceWorker();

@@ -236,7 +236,7 @@ class EnhancedTable extends Component {
     orderBy: 'calories',
     selected: [],
     data: [
-      createData('Redes de Computadores', 'Andrew S Tanenbaum, David Wetheral', 5, 'Pearson', 2007),
+      createData('Redes de Computadores', 'Andrew S Tanenbaum, David Wetheral', 5, 'Pearson', 2011),
       createData('Inteligencia artificial', 'George F Luger', '6', 'Pearson', 2011),
       createData('Sistemas Operacionais Modernos', 'Andrew S Tanenbaum', 3, 'Pearson', 2009),
       /*createData('Sistemas Digitais principios e aplicacoes', 'Ronald J Tocci, Neal S Widmer, Gregory L Moss', 11, 'Pearson', 2009),

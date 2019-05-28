@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import Button from '@material-ui/core/Button'
 import { Link } from 'react-router-dom'
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from '../../styles/index.js'
 //import { ButtonLink } from '../components/Botoes'
-import { Container, Form } from '../../styles/style'
+import { Container } from '../../styles/style'
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
@@ -28,8 +28,21 @@ class Login extends Component {
 		return (
 		  <MuiThemeProvider theme={theme}>
 		  	<Container>
-		  		<form >
-		  			<FormControl margin="normal" >
+
+		  		<form style={{width: '33%'}}>
+		  			<FormControl fullWidth>
+					    <InputLabel required htmlFor="formatted-text-mask-input">ID</InputLabel>
+					    <Input style={{marginRight: 20}}
+					    	name='_id'
+					    	value={this.state.usu_Email}
+					    	id="_id"
+					    	onChange={ this.handleInputChange }
+					      disableUnderline
+					      required
+					    />
+					  </FormControl>
+
+		  			<FormControl fullWidth>
 					    <InputLabel required htmlFor="formatted-text-mask-input">Senha</InputLabel>
 					    <Input style={{marginRight: 20}}
 					    	required 
@@ -53,18 +66,8 @@ class Login extends Component {
 					    />
 					  </FormControl>
 
-					  <FormControl margin="normal" fullWidth>
-					    <InputLabel htmlFor="formatted-text-mask-input">E-mail</InputLabel>
-					    <Input style={{marginRight: 20}}
-					    	name='usu_Email'
-					    	value={this.state.usu_Email}
-					    	id="usu_Email"
-					    	onChange={ this.handleInputChange }
-					      disableUnderline
-					    />
-					  </FormControl>
 						<Link to="/home"> 
-							<Button variant="contained" color='primary'>
+							<Button size="large" fullWidth variant="contained" color='primary'>
 							  Login
 							</Button>
 						</Link>

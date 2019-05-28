@@ -1,4 +1,5 @@
-import { CREATE_EXE, DELETE_EXE, GET_EXE, PUT_EXE } from '../actions/tipos';
+import { CREATE_EXE, DELETE_EXE, GET_EXE//, PUT_EXE 
+} from '../actions/tipos';
 //import { ADD_USU } from '../actions/actionTypes';
 
 // const initialState = {

@@ -32,25 +32,25 @@ class Home extends Component {
 							</Link>
 						</div>
 						<div style={div}>
-							<Link to="/debitos">
+							<Link to="/posse">
 								<Button variant="contained" size="large" color="primary">
-									Débitos
+									Posse
 								</Button>
 							</Link>
 						</div>
 					</Form>
 
 					<Form>
-						<div style={div}disabled={true}>
-							<Link  to="/cadastro" >
-								<Button variant="contained" size="large" color="primary" disabled={true}>
+						<div style={div}>
+							<Link to="/cadastro" >
+								<Button variant="contained" size="large" color="primary" disabled>
 									Cadastro
 								</Button>
 							</Link>
 						</div>
 						<div style={div}>
 							<Link to="/relatorio">
-								<Button variant="contained" size="large" color="primary" disabled={true}>
+								<Button variant="contained" size="large" color="primary" disabled>
 									Relatórios
 								</Button>
 							</Link>

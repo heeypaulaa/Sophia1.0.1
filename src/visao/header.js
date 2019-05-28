@@ -82,7 +82,8 @@ class Header extends Component {
   };
 
   render() {
-    const { auth, anchorEl, anchorEl2 } = this.state;
+    const { //auth, anchorEl2, 
+    	anchorEl } = this.state;
     const open = Boolean(anchorEl);
     // const openL2 = Boolean(anchorEl2);
     // const { classes } = this.props;
@@ -170,12 +171,7 @@ class Header extends Component {
 					            		<ListItemText inset primary="Exemplar"/>
 					            	</ListItem>
 					            </Link>
-					            <Link to="/cadCalendario"> 
-					            	<ListItem button >
-					            		{/*<Today color='primary'/>*/}
-					              	<ListItemText inset primary="Calendário" />
-					            	</ListItem>
-					            </Link>
+					            
 					          </List>
 					        </Collapse>
 
@@ -193,16 +189,16 @@ class Header extends Component {
 					            	{/*<ViewDay/>*/}
 					              <ListItemText inset primary="Dia" />
 					            </ListItem>
-					            <ListItem button >
-					              <ListItemText inset primary="Geral" />
-					            </ListItem>
+					            {/* <ListItem button > */}
+					            {/*   <ListItemText inset primary="Geral" /> */}
+					            {/* </ListItem> */}
 					          </List>
 					        </Collapse>
 
-					        <Link to='/debitos'>
+					        <Link to='/posse'>
 				        		<ListItem button >
 				        			<Payment color='primary'/>
-				        			<ListItemText primary='Débitos'/>
+				        			<ListItemText primary='Posse'/>
 				        		</ListItem>
 			        		</Link>
 			        		<Link to='/emprestimo'>
