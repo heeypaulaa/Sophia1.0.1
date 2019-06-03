@@ -211,9 +211,10 @@ class FormUsu extends Component{
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.usu_Nome.trim() && this.state.usu_Mae.trim() && 
-    	this.state.usu_Cidade.trim() && this.state.usu_Bairro.trim() && 
-    	this.state.usu_Senha.trim() && this.state.usu_Nasc.trim() && 
-    	this.state.usu_Estado.trim() && this.state.usu_Endereco.trim()){
+    	this.state.usu_Cidade.trim() && this.state.usu_Bairro.trim() &&
+    	this.state.usu_CPF.trim() && this.state.usu_Senha.trim() &&
+    	this.state.usu_Nasc.trim() && this.state.usu_Estado.trim() && 
+    	this.state.usu_Endereco.trim()){
       
       //console.log(this.state);
       this.props.onAddUsu(this.state);

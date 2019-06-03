@@ -1,5 +1,5 @@
 
-import { CREATE_USU, DELETE_USU, GET_USU, PUT_USU, CREATE_EXE, DELETE_EXE, GET_EXE//, PUT_EXE 
+import { CREATE_USU, DELETE_USU, GET_USU, GET_CPF, PUT_USU, CREATE_EXE, DELETE_EXE, GET_EXE//, PUT_EXE 
 } from './tipos';
 import axios from 'axios';
 
@@ -67,17 +67,58 @@ export const deleteUsu = id => {
 
 /*GET*/
 //assincrono
-// function searchCPF()
-export const fetchUsus = (usus) => {
-  function funcao(obj){
-    if('usu_CPF' in obj){
-      //if (obj.usu_CPF == "452.071.323-42")
-      console.log(obj.usu_CPF == "452.071.323-42")
+// retorna um objeto igual ao valor do filtro
+const filterObject = (obj, filter, filterValue) =>
+  Object.keys(obj).reduce((acc, val) =>
+  (obj[val][filter] !== filterValue ? acc : {
+    ...acc,
+    [val]:obj[val]
+  }), {});
+
+export const getUsuCPF = ({usu_CPF}) => {
+  console.log("entrou get cpf "+ usu_CPF);
+  return (dispatch) => {
+    return axios.get(apiUrlUsu)
+      .then(response => {
+        // console.log(filterObject(response.data, "usu_CPF", usu_CPF));
+        dispatch(getCPFSucess(filterObject(response.data, "usu_CPF", usu_CPF)[0]))
+      })
+      .catch(error => {
+        throw(error);
+      });
+  };
+}
+
+export const getCPFSucess = (data) => {
+  console.log("sucesso");
+  console.log(data.usu_CPF);
+  return {
+    type: GET_CPF,
+    // data
+    payload: {
+      _id: data._id, 
+      usu_Nome: data.usu_Nome, 
+      usu_Mae: data.usu_Mae, 
+      usu_Nasc: data.usu_Nasc, 
+      usu_Tel: data.usu_Tel, 
+      usu_CPF: data.usu_CPF,
+      usu_Endereco: data.usu_Endereco, 
+      usu_Bairro: data.usu_Bairro, 
+      usu_Cidade: data.usu_Cidade, 
+      usu_Estado: data.usu_Estado, 
+      usu_Email: data.usu_Email, 
+      usu_Admin: data.usu_Admin, 
+      usu_Bloqueado: data.usu_Bloqueado, 
+      usu_Senha: data.usu_Senha, 
+      usu_PosseQuant: data.usu_PosseQuant, 
+      usu_ExemplarPosse: data.usu_ExemplarPosse, 
+      usu_Historico: data.usu_Historico
     }
-    //console.log()
+
   }
-  usus.forEach(function(usu){
-    console.log("ola" + usus.filter(funcao))});
+}
+
+export const fetchUsus = (usus) => {
   return {
     type: GET_USU,
     usus
@@ -154,17 +195,6 @@ export const getUsuIdSuccess = (usu) => {
   }
 };
 
-export const getUsuCPF = cpf => {
-  return (dispatch) => {
-    return axios.get(`${apiUrlUsu}/${cpf}`)
-      .then(response => {
-        dispatch(getUsuIdSuccess(response.data))
-      })
-      .catch(error => {
-        throw (error);
-      })
-  };
-};
 
 
 
