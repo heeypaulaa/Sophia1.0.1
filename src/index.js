@@ -4,7 +4,7 @@ import App from './App';
 
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
+// import { Provider } from 'react-redux';
 
 import rootUsuReducer from './reducers/rootUsuReducer';
 // import rootExeReducer from './reducers/rootUsuReducer';
@@ -20,9 +20,9 @@ storeUsu.dispatch(fetchAllUsus());
 //import { addUsu } from './actions/taskActions';
 
 ReactDOM.render((
-	<Provider store = {storeUsu}>
+	// <Provider store = {storeUsu}>
 		<App />
-	</Provider>
+	// </Provider>
 	), document.getElementById('root')
 );
 

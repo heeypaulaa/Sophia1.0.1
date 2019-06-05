@@ -1,5 +1,5 @@
 
-import { CREATE_USU, DELETE_USU, GET_USU, GET_CPF, PUT_USU, CREATE_EXE, DELETE_EXE, GET_EXE//, PUT_EXE 
+import { CREATE_USU, DELETE_USU, GET_USU, GET_CPF, PUT_USU, CREATE_EXE, DELETE_EXE, GET_EXE, GET_RFID//, PUT_EXE 
 } from './tipos';
 import axios from 'axios';
 
@@ -90,7 +90,7 @@ export const getUsuCPF = ({usu_CPF}) => {
 }
 
 export const getCPFSucess = (data) => {
-  console.log("sucesso");
+  console.log("sucesso CPF");
   console.log(data.usu_CPF);
   return {
     type: GET_CPF,
@@ -154,7 +154,7 @@ export function updateTaskSuccess(data) {
   return {
       type: PUT_USU,
       payload: {
-          _id: data._id, 
+      _id: data._id, 
       nome: data.usu_Nome, 
       nomeMae: data.usu_Mae, 
       nasc: data.usu_Nasc, 
@@ -276,3 +276,39 @@ export const fetchAllExes = () => {
       });
   };
 };
+
+export const getExeRFID = ({exe_RFID}) => {
+  console.log("entrou get RFID "+ exe_RFID);
+  return (dispatch) => {
+    return axios.get(apiUrlExe)
+      .then(response => {
+        // console.log(filterObject(response.data, "exe_RFID", exe_RFID)[0])        
+        dispatch(getRFIDSucess(filterObject(response.data, "exe_RFID", exe_RFID)[0]))
+      })
+      .catch(error => {
+        throw(error);
+      });
+  };
+}
+
+export const getRFIDSucess = (data) => {
+  console.log("sucesso RFID");
+  console.log(data.exe_RFID);
+  return {
+    type: GET_RFID,
+    payload: {
+      _id: data._id,
+      exe_RFID: data.exe_RFID,
+      exe_Titulo: data.exe_Titulo, 
+      exe_SubTitulo: data.exe_SubTitulo, 
+      exe_Autor: data.exe_Autor, 
+      exe_Edicao: data.exe_Edicao,
+      exe_Editora: data.exe_Editora, 
+      exe_NumPaginas: data.exe_NumPaginas, 
+      exe_Ano: data.exe_Ano, 
+      exe_ISBN: data.exe_ISBN, 
+      exe_Emprestado: data.exe_Emprestado,
+      exe_Historico: data.exe_Historico// data
+    }
+  }
+}

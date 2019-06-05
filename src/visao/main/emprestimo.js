@@ -11,8 +11,6 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-// import Checkbox from '@material-ui/core/Checkbox';
-// import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
@@ -31,6 +29,8 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 // import MaskedInput from 'react-text-mask';
+import { connect } from 'react-redux';
+import { getExeRFID } from '../../actions/index'
 
 let counter = 0;
 
@@ -122,7 +122,7 @@ class EnhancedTableHead extends Component {
 EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
+  // onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.string.isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -181,28 +181,28 @@ EnhancedTableToolbar.propTypes = {
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 
 const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-  },
-  table: {
-    minWidth: 900,
-  },
-  add: {
-  	position: 'fixed',
-  	bottom: 20,
-    right: 20,
-  },
-  cancela: {
-  	bottom: 20,
-    position: 'fixed',
-    left: 20,
-  },
-  finaliza: {
-  	bottom: 20,
-    position: 'fixed',
-    left: theme.spacing.unit * 20,
-  },
+  // root: {
+  //   width: '100%',
+  //   marginTop: theme.spacing.unit * 3,
+  // },
+  // table: {
+  //   minWidth: 900,
+  // },
+  // add: {
+  // 	position: 'fixed',
+  // 	bottom: 20,
+  //   right: 20,
+  // },
+  // cancela: {
+  // 	bottom: 20,
+  //   position: 'fixed',
+  //   left: 20,
+  // },
+  // finaliza: {
+  // 	bottom: 20,
+  //   position: 'fixed',
+  //   left: theme.spacing.unit * 20,
+  // },
   tableWrapper: {
     overflowX: 'auto',
   },
@@ -212,6 +212,8 @@ const styles = theme => ({
 
 class EnhancedTable extends Component {
   state = {
+    exe_RFID: "",
+    mudou: "",
     add: false,
   	open: false,
     addLivro: false,
@@ -273,6 +275,41 @@ class EnhancedTable extends Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
+  handleInputChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  handleSubmit = async e => {
+    e.preventDefault();
+    if (this.state.exe_RFID.trim()){
+      console.log("clicou")
+      //console.log(getUsuCPF(this.state.usu_CPF));
+
+      this.props.onFindRFID(this.state);
+      //console.log("depois");
+      //console.log(this.props.onAddLogin);
+      //this.state.mudou.setState(this.usu.usu_Nome);
+      //this.handleReset();
+      if(this.props.exe.exe_RFID !== ''){
+        // if(this.state.exe_RFID === this.props.exe.exe_RFID){
+          console.log("RFID OK");
+          const novo = createData('Compiladores principios tecnicas e ferramentas', 'Alfred V Aho, Monica S Lam, Ravi Sethi, Jeffrey D Ullman', 2, 'Pearson', 2011);
+          this.setState(state => {
+            const data = state.data.push(novo);
+          });
+          // createData(this.props.exe.exe_Titulo, this.props.exe.exe_Autor, this.props.exe.exe_Edicao, this.props.exe.exe_Editora, this.props.exe.exe_Ano)
+          this.handleClose();
+          // this.setState({senhaCorreta: true})
+          // this.props.history.push("/home");
+        // }
+      }else{
+        console.log("RFID errada");
+      }
+      
+    }
+  };
 
   addL = (data) => data === 3;
 
@@ -284,15 +321,16 @@ class EnhancedTable extends Component {
 
     return (
       <MuiThemeProvider theme={theme}>
-        <Paper className={classes.root}>
+        <Paper style={{width: '100%',
+    marginTop: theme.spacing.unit * 3}}>
           <EnhancedTableToolbar numSelected={selected.length} />
-          <div className={classes.tableWrapper}>
-            <Table className={classes.table} aria-labelledby="tableTitle">
+          <div style={{overflowX: 'auto'}}>
+            <Table style={{minWidth: 900}} aria-labelledby="tableTitle">
               <EnhancedTableHead
                 numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
-                onSelectAllClick={this.handleSelectAllClick}
+                // onSelectAllClick={this.handleSelectAllClick}
                 onRequestSort={this.handleRequestSort}
                 rowCount={data.length}
               />
@@ -326,88 +364,141 @@ class EnhancedTable extends Component {
               </TableBody>
             </Table>
           </div>
-          
-          <Button variant="contained" color="secondary" className={classNames(classes.button, classes.cancela)}>
-  	        <DeleteIcon/>
-  	        Cancela
-  	      </Button>
-
-  {/* BOTÃO FINALIZA */}
-          <Button onClick={this.handleClickFinaliza} variant="contained" color="primary" className={classNames(classes.button, classes.finaliza)}>
-  	        <SaveIcon/>
-  	        Finalizar
-  	      </Button>
-          <Dialog
-            onClose={this.handleClose}
-            aria-labelledby="customized-dialog-title"
-            open={this.state.open}
-          >
-            <DialogTitle id="customized-dialog-title">
-              Comprovante de Empréstimo
-            </DialogTitle>
-            <DialogContent>
-              <Typography gutterBottom>
-                Empréstimo realizado com sucesso!
-                Sua data de devolução é 19/04/2019
-              </Typography>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
-                OK
-              </Button>
-            </DialogActions>
-          </Dialog>
-
-  {/* BOTÃO ADICIONA */}
-  				<Fab disabled={addL} 
-            color="primary" marginLeft = "100" 
-            aria-label="Add" className={classes.add}
-            onClick={this.handleAdd}
-          >
-  					<AddIcon />
-  				</Fab>
-          <Dialog
-            onClose={this.handleClose}
-            aria-labelledby="customized-dialog-title"
-            open={this.state.addLivro}
-          >
-            <DialogTitle id="customized-dialog-title">
-              Leitura da Tag do Livro
-            </DialogTitle>
-            <DialogContent >
-              <Typography gutterBottom>
-                Aproxime a tag ao leitor ou digite-a de acordo como está no livro
-              </Typography>
-              <CircularProgress  disableShrink />
-            </DialogContent>
-              <FormControl variant="outlined" margin="normal">
-              <InputLabel htmlFor="formatted-text-mask-input">Número da tag</InputLabel>
-              <Input style={{marginRight: 20}}
-                name='exe_RFID'
-                value={this.state.exe_RFID}
-                onChange={ this.handleInputChange }
-                id="usu_RFID"
-                disableUnderline
-              />
-            </FormControl>
-            <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
-                Cancela
-              </Button>
-              <Button onClick={this.handleClose} color="primary">
-                OK
-              </Button>
-            </DialogActions>
-          </Dialog>
         </Paper>
+        <Button variant="contained" 
+          color="secondary" 
+          // className={classNames(classes.cancela)}>
+          style={{bottom: 20,
+    position: 'fixed',
+    left: 20}}>
+          <DeleteIcon/>
+          Cancela
+        </Button>
+
+{/* BOTÃO FINALIZA */}
+        <Button onClick={this.handleClickFinaliza} 
+          variant="contained" color="primary" 
+          // className={classNames(classes.button, classes.finaliza)}
+          style={{
+            bottom: 20,
+            position: 'fixed',
+            left: theme.spacing.unit * 20
+          }}
+        >
+          <SaveIcon/>
+          Finalizar
+        </Button>
+        <Dialog
+          onClose={this.handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={this.state.open}
+        >
+          <DialogTitle id="customized-dialog-title">
+            Comprovante de Empréstimo
+          </DialogTitle>
+          <DialogContent>
+            <Typography gutterBottom>
+              Empréstimo realizado com sucesso!
+              Sua data de devolução é 19/04/2019
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+
+{/* BOTÃO ADICIONA */}
+        <Fab disabled={addL} 
+          color="primary" 
+          // style={{ }}
+          aria-label="Add" 
+          style={{position: 'fixed',
+            bottom: 20,
+            right: 20,
+            // marginLeft: 100
+            }}
+          onClick={this.handleAdd}
+        >
+          <AddIcon />
+        </Fab>
+        <Dialog
+          onClose={this.handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={this.state.addLivro}
+        >
+          <DialogTitle id="customized-dialog-title">
+            Leitura da Tag do Livro
+          </DialogTitle>
+          <DialogContent >
+            <Typography gutterBottom>
+              Aproxime a tag ao leitor ou digite-a de acordo como está no livro
+            </Typography>
+            <CircularProgress  disableShrink />
+          </DialogContent>
+            <FormControl variant="outlined" margin="normal">
+            <InputLabel htmlFor="formatted-text-mask-input">Número da tag</InputLabel>
+            <Input style={{marginRight: 20}}
+              name='exe_RFID'
+              value={this.state.exe_RFID}
+              onChange={ this.handleInputChange }
+              id="usu_RFID"
+              disableUnderline
+            />
+          </FormControl>
+          <Input style={{marginRight: 20}}
+              // name='exe_RFID'
+              disabled
+              value={this.state.mudou}
+              // onChange={ this.handleInputChange }
+              // id="usu_RFID"
+              disableUnderline
+            />
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancela
+            </Button>
+            <Button 
+              onClick={this.handleSubmit}
+              // type="submit" 
+              // onSubmit={ this.handleSubmit } 
+              // onClick={() => {
+              // this.setState({mudou: this.state.exe_RFID});
+              // console.log(this.state.mudou);
+              // }} color="primary"
+            >
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
        </MuiThemeProvider>
 
     );
   }
+  
 }
+
 
 EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(EnhancedTable);
+const mapDispatchToProps = dispatch => {
+  return {
+    onFindRFID: stateRFID => {
+      console.log("vai");
+      console.log(stateRFID);
+      console.log(dispatch(getExeRFID(stateRFID)));
+    }
+  };
+};
+
+function mapStateToProps(state){
+  return {
+    exe: state.exes,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EnhancedTable);

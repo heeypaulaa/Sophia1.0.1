@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Button from '@material-ui/core/Button'
-import { Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from '../../styles/index.js'
@@ -18,6 +18,37 @@ import { getUsuCPF } from '../../actions/index'
 // import Login from '../visao/main/login';
 
 //export default connect(null, mapDispatchToProps)(Login);
+// function PrivateRoute({ component: Component, ...rest }) {
+//   return (
+//     <Route
+//       {...rest}
+//       render={props =>
+//         fakeAuth.isAuthenticated ? (
+//           <Component {...props} />
+//         ) : (
+//           <Redirect
+//             to={{
+//               pathname: "/",
+//               state: { from: props.location }
+//             }}
+//           />
+//         )
+//       }
+//     />
+//   );
+// }
+// 
+// const fakeAuth = {
+//   isAuthenticated: false,
+//   authenticate(cb) {
+//     this.isAuthenticated = true;
+//     setTimeout(cb, 100); // fake async
+//   },
+//   signout(cb) {
+//     this.isAuthenticated = false;
+//     setTimeout(cb, 100);
+//   }
+// };
 
 function TextMaskCPF(props) {
   const { inputRef, ...other } = props;
@@ -41,6 +72,7 @@ TextMaskCPF.propTypes = {
 	
 class Login extends Component {	
 	state ={
+		senhaCorreta: false,
 		usu_CPF: '',
 		usu_Senha: '',
 		showPassword: false,
@@ -56,18 +88,43 @@ class Login extends Component {
 		this.setState({ [key]: event.target.checked });
 	}
 
-	handleSubmit = e => {
+	handleSubmit = async e => {
     e.preventDefault();
     if (this.state.usu_CPF.trim() && this.state.usu_Senha.trim()){
     	console.log("clicou")
       //console.log(getUsuCPF(this.state.usu_CPF));
 
       this.props.onAddLogin(this.state);
-      console.log("depois");
-      console.log(this.props.usu);
+      //console.log("depois");
+      //console.log(this.props.onAddLogin);
+      //this.state.mudou.setState(this.usu.usu_Nome);
       //this.handleReset();
+      if(this.props.usu.usu_Senha !== ''){
+	  		if(this.state.usu_Senha === this.props.usu.usu_Senha){
+	  			console.log("senha OK");
+	  			this.setState({senhaCorreta: true})
+	  			this.props.history.push("/home");
+	  		}
+	  		else{
+		  		console.log("senha errada");
+		  	}
+	  	}
     }
   };
+
+  // login = () =>{
+  // 	console.log("estou aqui");
+  // 	if(this.props.usu.usu_Senha != ''){
+  // 		if(this.state.usu_Senha == this.props.usu.usu_Senha){
+  // 			console.log("senha OK");
+  // 			return true;
+  // 		}
+  // 		else{
+	 //  		console.log("senha errada");
+	 //  		// return false;
+	 //  	}
+  // 	}
+  // }
 
 	handleClickShowPassword = () => {
     this.setState(state => ({ showPassword: !state.showPassword }));
@@ -82,6 +139,7 @@ class Login extends Component {
 		  	<Container>
 
 		  		<form onSubmit={ this.handleSubmit } style={{width: '33%'}}>
+		  			{/* <input value= {this.props.usu.usu_Senha}></input> */}
 		  			<FormControl fullWidth>
 					    <InputLabel required htmlFor="formatted-text-mask-input">ID</InputLabel>
 					   	<Input style={{marginRight: 20}}
@@ -119,7 +177,22 @@ class Login extends Component {
 					  </FormControl>
 
 						{/* <Link to="/home">  */}
-							<Button type="submit" size="large" fullWidth variant="contained" color='primary'>
+							<Button type="submit" 
+								size="large" fullWidth 
+								variant="contained" 
+								color='primary'
+								render={() => (
+									this.senhaCorreta ? (
+							  	// if(this.props.usu.usu_Senha != ''){
+							  	// 	if(this.state.usu_Senha == this.props.usu.usu_Senha){
+							  			<Redirect
+						            to="/home"
+						            // state: { from: props.location }
+						          />) : (console.log("senha errada"))
+							  	// 	}
+							  	// }
+							  )}
+							>
 							  Login
 							</Button>
 						{/* </Link> */}
@@ -135,15 +208,15 @@ const mapDispatchToProps = dispatch => {
     onAddLogin: stateLogin => {
     	console.log("vai");
     	console.log(stateLogin);
-      dispatch(getUsuCPF(stateLogin));
+      console.log(dispatch(getUsuCPF(stateLogin)));
     }
   };
 };
 
-const mapStateToProps = state => {
+function mapStateToProps(state){
 	return {
-		usu: state.usus.result
-	};
-};
+		usu: state.usus,
+	}
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
