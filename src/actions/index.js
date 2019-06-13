@@ -66,14 +66,38 @@ export const deleteUsu = id => {
 };
 
 /*GET*/
-//assincrono
+// assincrono
 // retorna um objeto igual ao valor do filtro
 const filterObject = (obj, filter, filterValue) =>
   Object.keys(obj).reduce((acc, val) =>
   (obj[val][filter] !== filterValue ? acc : {
     ...acc,
-    [val]:obj[val]
+    val:obj[val]
   }), {});
+
+// const filterObject = (obj, filter, filterValue) =>
+//   Object.keys(obj).reduce((acc, val) =>
+//   , {});
+
+function filter(array, filter, filterValue){
+  array.forEach(obj => {
+    // console.log(obj)
+    if(obj[filter] === filterValue){
+      console.log(obj);
+      return obj;
+    }
+  })
+};
+
+// function filterObj(keys, obj) {
+//   const newObj = {};
+//   Object.keys(obj).forEach(key => {
+//     if (keys.includes(key)) {
+//       newObj[key] = obj[key];
+//     }
+//   });
+//   return newObj;
+// }
 
 export const getUsuCPF = ({usu_CPF}) => {
   console.log("entrou get cpf "+ usu_CPF);
@@ -81,7 +105,7 @@ export const getUsuCPF = ({usu_CPF}) => {
     return axios.get(apiUrlUsu)
       .then(response => {
         // console.log(filterObject(response.data, "usu_CPF", usu_CPF));
-        dispatch(getCPFSucess(filterObject(response.data, "usu_CPF", usu_CPF)[0]))
+        dispatch(getCPFSucess(filterObject(response.data, "usu_CPF", usu_CPF).val))
       })
       .catch(error => {
         throw(error);
@@ -247,7 +271,7 @@ export const deleteExeSuccess = id => {
 
 export const deleteExe = id => {
   return (dispatch) => {
-    return axios.get(`${apiUrlUsu}/delete/${id}`)
+    return axios.get(`${apiUrlExe}/delete/${id}`)
       .then(response => {
         dispatch(deleteExeSuccess(response.data))
       })
@@ -267,7 +291,7 @@ export const fetchExes = (exes) => {
 
 export const fetchAllExes = () => {
   return (dispatch) => {
-    return axios.get(apiUrlUsu)
+    return axios.get(apiUrlExe)
       .then(response => {
         dispatch(fetchExes(response.data))
       })
@@ -282,8 +306,10 @@ export const getExeRFID = ({exe_RFID}) => {
   return (dispatch) => {
     return axios.get(apiUrlExe)
       .then(response => {
+        console.log("response:")
+        console.log(response.data);
         // console.log(filterObject(response.data, "exe_RFID", exe_RFID)[0])        
-        dispatch(getRFIDSucess(filterObject(response.data, "exe_RFID", exe_RFID)[0]))
+        dispatch(getRFIDSucess( filterObject(response.data, "exe_RFID", exe_RFID).val ) )
       })
       .catch(error => {
         throw(error);
@@ -292,8 +318,8 @@ export const getExeRFID = ({exe_RFID}) => {
 }
 
 export const getRFIDSucess = (data) => {
-  console.log("sucesso RFID");
-  console.log(data.exe_RFID);
+  console.log("sucesso RFID:");
+  console.log(data);
   return {
     type: GET_RFID,
     payload: {

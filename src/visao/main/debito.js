@@ -11,25 +11,42 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-// import Checkbox from '@material-ui/core/Checkbox';
-// import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-// import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-// import Fab from '@material-ui/core/Fab';
-// import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
-// import SaveIcon from '@material-ui/icons/Save';
-// import Dialog from '@material-ui/core/Dialog';
-// import DialogTitle from '@material-ui/core/DialogTitle';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import DialogContent from '@material-ui/core/DialogContent';
+import SaveIcon from '@material-ui/icons/Save';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from '../../styles/index.js'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+// import MaskedInput from 'react-text-mask';
+import { connect } from 'react-redux';
+import { getExeRFID } from '../../actions/index'
+
+import io from 'socket.io-client'
 
 let counter = 0;
-function createData(titulo, autor, edicao, editora, ano) {
+
+function criar(posse){
+  console.log(posse.length);
+  for (var i = posse.length - 1; i >= 0; i--) {
+    // onFindRFID(posse[i].exeID);
+  }
+  return posse;
+}
+
+function createData(titulo, autor, edicao, editora, ano,) {
   counter += 1;
+  console.log('counter '+counter);
   return { id: counter, titulo, autor, edicao, editora, ano };
 }
 
@@ -72,15 +89,14 @@ class EnhancedTableHead extends Component {
 
   render() {
     const { //onSelectAllClick, 
-      order, orderBy
-      // numSelected, rowCount 
+      order, orderBy, 
+      //numSelected, rowCount 
     } = this.props;
 
     return (
       <MuiThemeProvider theme={theme}>
         <TableHead>
           <TableRow>
-            
             {rows.map(
               row => (
                 <TableCell
@@ -114,8 +130,9 @@ class EnhancedTableHead extends Component {
 }
 
 EnhancedTableHead.propTypes = {
+  numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
+  // onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.string.isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -147,16 +164,20 @@ const toolbarStyles = theme => ({
 });
 
 let EnhancedTableToolbar = props => {
-  const { 
-    // numSelected, 
-    classes } = props;
+  const { numSelected, classes } = props;
 
   return (
     <MuiThemeProvider theme={theme}>
-      <Toolbar className={classNames(classes.root)}>
-        <Typography variant="h6" id="tableTitle">
-        	Em Posse
-				</Typography>
+      <Toolbar
+        className={classNames(classes.root, {
+          [classes.highlight]: numSelected > 0,
+        })}
+      >
+       
+            <Typography variant="h6" id="tableTitle">
+              Empréstimo
+            </Typography>
+         
       </Toolbar>
       </MuiThemeProvider>
   );
@@ -164,50 +185,61 @@ let EnhancedTableToolbar = props => {
 
 EnhancedTableToolbar.propTypes = {
   classes: PropTypes.object.isRequired,
+  numSelected: PropTypes.number.isRequired,
 };
 
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 
 const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-  },
-  table: {
-    minWidth: 900,
-  },
-  add: {
-  	position: 'fixed',
-  	bottom: 20,
-    right: 20,
-  },
-  cancela: {
-  	bottom: 20,
-    position: 'fixed',
-    left: 20,
-  },
-  finaliza: {
-  	bottom: 20,
-    position: 'fixed',
-    left: theme.spacing.unit * 20,
-  },
+  // root: {
+  //   width: '100%',
+  //   marginTop: theme.spacing.unit * 3,
+  // },
+  // table: {
+  //   minWidth: 900,
+  // },
+  // add: {
+  //  position: 'fixed',
+  //  bottom: 20,
+  //   right: 20,
+  // },
+  // cancela: {
+  //  bottom: 20,
+  //   position: 'fixed',
+  //   left: 20,
+  // },
+  // finaliza: {
+  //  bottom: 20,
+  //   position: 'fixed',
+  //   left: theme.spacing.unit * 20,
+  // },
   tableWrapper: {
     overflowX: 'auto',
   },
 });
 
-
+// var socket = io('http:10.120.253.102:29298');
+const TAG = '';
+// socket.on('tag', function(data){
+//   TAG = data.toString('ascii');
+//   console.log(data);
+// })
 
 class EnhancedTable extends Component {
   state = {
-  	open: false,
+    exe_RFID: "",
+    mudou: "",
+    add: false,
+    open: false,
+    addLivro: false,
     order: 'asc',
     orderBy: 'calories',
     selected: [],
-    data: [
-      createData('Redes de Computadores', 'Andrew S Tanenbaum, David Wetheral', 5, 'Pearson', 2011),
-      createData('Inteligencia artificial', 'George F Luger', '6', 'Pearson', 2011),
-      createData('Sistemas Operacionais Modernos', 'Andrew S Tanenbaum', 3, 'Pearson', 2009),
+    usu_ExemplarPosse: [],
+    data: criar(this.props.usu.usu_ExemplarPosse),//[
+      // createData('Redes de Computadores', 'Andrew S Tanenbaum, David Wetheral', 5, 'Pearson', 2011),
+      // createData('Inteligencia artificial', 'George F Luger', '6', 'Pearson', 2011),
+      //createData('Sistemas Operacionais Modernos', 'Andrew S Tanenbaum', 3, 'Pearson', 2009),
       /*createData('Sistemas Digitais principios e aplicacoes', 'Ronald J Tocci, Neal S Widmer, Gregory L Moss', 11, 'Pearson', 2009),
       createData('Compiladores principios tecnicas e ferramentas', 'Alfred V Aho, Monica S Lam, Ravi Sethi, Jeffrey D Ullman', 2, 'Pearson', 2011),
       createData('Engenharia de Controle Moderno', 'Katsuhiko Ogata', 4, 'Pearson', 2000),
@@ -215,7 +247,7 @@ class EnhancedTable extends Component {
       createData('Planejamento Financeiro', 'Camila Camargo', 2, 'IBPEX', 2007),
       createData('Gestao de Projetos - Administracao 8', 'Rinaldo Jose Barbosa Lima', 7, 'Pearson', 2011),
       createData('Calculo Numerico', 'Neide Maria Bertoldi Franco', 1, 'Pearson', 2008),*/
-    ],
+    //],
     page: 0,
     rowsPerPage: 5,
   };
@@ -231,37 +263,10 @@ class EnhancedTable extends Component {
     this.setState({ order, orderBy });
   };
 
-  handleSelectAllClick = event => {
-    if (event.target.checked) {
-      this.setState(state => ({ selected: state.data.map(n => n.id) }));
-      return;
-    }
-    this.setState({ selected: [] });
-  };
 
-  handleClick = (event, id) => {
-    const { selected } = this.state;
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    this.setState({ selected: newSelected });
-  };
   
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({ open: false, addLivro: false, });
   };
 
   handleClickFinaliza = () => {
@@ -270,26 +275,80 @@ class EnhancedTable extends Component {
     });
   };
 
-  handleChangePage = (event, page) => {
-    this.setState({ page });
+  handleChangeRows = () => {
+    if (counter >= 3){
+      this.setState({add: true});
+    }
   };
 
- 
+  handleAdd = () => {
+    console.log(TAG);
+    this.setState({
+      addLivro: true,
+    });
+  }
+
+  handleChangeRowsPerPage = event => {
+    this.setState({ rowsPerPage: event.target.value });
+  };
+
+  handleInputChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  handleSubmit = async e => {
+    e.preventDefault();
+    if (this.state.exe_RFID.trim()){
+      console.log("clicou")
+      //console.log(getUsuCPF(this.state.usu_CPF));
+
+      this.props.onFindRFID(this.state.exe_RFID);
+      //console.log("depois");
+      //console.log(this.props.onAddLogin);
+      //this.state.mudou.setState(this.usu.usu_Nome);
+      //this.handleReset();
+      if(this.props.exe.exe_RFID !== ''){
+        // if(this.state.exe_RFID === this.props.exe.exe_RFID){
+          console.log("RFID OK");
+          // const novo = createData('Compiladores principios tecnicas e ferramentas', 'Alfred V Aho, Monica S Lam, Ravi Sethi, Jeffrey D Ullman', 2, 'Pearson', 2011);
+          const novo = createData(this.props.exe.exe_Titulo, this.props.exe.exe_Autor, this.props.exe.exe_Edicao, this.props.exe.exe_Editora, this.props.exe.exe_Ano);
+          this.setState(state => {
+            const data = state.data.push(novo);
+          });
+          // createData(this.props.exe.exe_Titulo, this.props.exe.exe_Autor, this.props.exe.exe_Edicao, this.props.exe.exe_Editora, this.props.exe.exe_Ano)
+          this.handleClose();
+          // this.setState({senhaCorreta: true})
+          // this.props.history.push("/home");
+        // }
+      }else{
+        console.log("RFID errada");
+      }
+      
+    }
+  };
+
+  addL = (data) => data === 3;
 
   render() {
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    const addL = this.addL(data.length);
 
     return (
       <MuiThemeProvider theme={theme}>
-        <Paper className={classes.root}>
+        <Paper style={{width: '100%',
+    marginTop: theme.spacing.unit * 3}}>
           <EnhancedTableToolbar numSelected={selected.length} />
-          <div className={classes.tableWrapper}>
-            <Table className={classes.table} aria-labelledby="tableTitle">
+          <div style={{overflowX: 'auto'}}>
+            <Table style={{minWidth: 900}} aria-labelledby="tableTitle">
               <EnhancedTableHead
+                numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
+                // onSelectAllClick={this.handleSelectAllClick}
                 onRequestSort={this.handleRequestSort}
                 rowCount={data.length}
               />
@@ -300,10 +359,11 @@ class EnhancedTable extends Component {
                     return (
                       <TableRow
                         hover
-                        onClick={event => this.handleClick(event, n.id)}
                         tabIndex={-1}
                         key={n.id}
+                        //onChange={event => this.handleChangeRows()}
                       >
+                        
                         <TableCell component="th" scope="row" padding="none">
                           {n.titulo}
                         </TableCell>
@@ -322,20 +382,140 @@ class EnhancedTable extends Component {
               </TableBody>
             </Table>
           </div>
-          <Button variant="contained" className={classNames(classes.button, classes.cancela)}>
-  	        Home
-  	      </Button>
-
-
         </Paper>
-        </MuiThemeProvider>
+        <Button variant="contained" 
+          color="secondary" 
+          // className={classNames(classes.cancela)}>
+          style={
+            {bottom: 20,
+              position: 'fixed',
+              left: 20}
+        }>
+          <DeleteIcon/>
+          Cancela
+        </Button>
+
+{/* BOTÃO FINALIZA */}
+        <Button onClick={this.handleClickFinaliza} 
+          variant="contained" color="primary" 
+          // className={classNames(classes.button, classes.finaliza)}
+          style={{
+            bottom: 20,
+            position: 'fixed',
+            left: theme.spacing.unit * 20
+          }}
+        >
+          <SaveIcon/>
+          Finalizar
+        </Button>
+        <Dialog
+          onClose={this.handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={this.state.open}
+        >
+          <DialogTitle id="customized-dialog-title">
+            Comprovante de Empréstimo
+          </DialogTitle>
+          <DialogContent>
+            <Typography gutterBottom>
+              Empréstimo realizado com sucesso!
+              Sua data de devolução é 19/04/2019
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+
+{/* BOTÃO ADICIONA */}
+        <Fab disabled={addL} 
+          color="primary" 
+          // style={{ }}
+          aria-label="Add" 
+          style={{position: 'fixed',
+            bottom: 20,
+            right: 20,
+            // marginLeft: 100
+            }}
+          onClick={this.handleAdd}
+        >
+          <AddIcon />
+        </Fab>
+        <Dialog
+          onClose={this.handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={this.state.addLivro}
+        >
+          <DialogTitle id="customized-dialog-title">
+            Leitura da Tag do Livro
+          </DialogTitle>
+          <DialogContent >
+            <Typography gutterBottom>
+              Aproxime a tag ao leitor ou digite-a de acordo como está no livro
+            </Typography>
+            <CircularProgress  disableShrink />
+          </DialogContent>
+            <FormControl variant="outlined" margin="normal">
+            <InputLabel htmlFor="formatted-text-mask-input">Número da tag</InputLabel>
+            <Input style={{marginRight: 20}}
+              name='exe_RFID'
+              value={this.state.exe_RFID}
+              onChange={ this.handleInputChange }
+              id="exe_RFID"
+              disableUnderline
+            />
+          </FormControl>
+          <Input style={{marginRight: 20}}
+              // name='exe_RFID'
+              disabled
+              value={this.state.mudou}
+              // onChange={ this.handleInputChange }
+              // id="usu_RFID"
+              disableUnderline
+            />
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancela
+            </Button>
+            <Button 
+              onClick={this.handleSubmit}
+              // type="submit" 
+              // onSubmit={ this.handleSubmit } 
+              // onClick={() => {
+              // this.setState({mudou: this.state.exe_RFID});
+              // console.log(this.state.mudou);
+              // }} color="primary"
+            >
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+       </MuiThemeProvider>
 
     );
   }
+  
 }
 
-EnhancedTable.propTypes = {
-  classes: PropTypes.object.isRequired,
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onFindRFID: stateRFID => {
+      console.log("vai");
+      console.log(stateRFID);
+      console.log(dispatch(getExeRFID(stateRFID)));
+    }
+  };
 };
 
-export default withStyles(styles)(EnhancedTable);
+function mapStateToProps(state){
+  return {
+    exe: state.exes,
+    usu: state.usus,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EnhancedTable);

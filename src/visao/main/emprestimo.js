@@ -28,11 +28,20 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
+import dateformat from 'dateformat';
 // import MaskedInput from 'react-text-mask';
 import { connect } from 'react-redux';
 import { getExeRFID } from '../../actions/index'
 
+import io from 'socket.io-client'
+
 let counter = 0;
+
+function criar(posse){
+  console.log(posse.length);
+
+  return posse;
+}
 
 function createData(titulo, autor, edicao, editora, ano,) {
   counter += 1;
@@ -50,19 +59,7 @@ function desc(a, b, orderBy) {
   return 0;
 }
 
-function stableSort(array, cmp) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = cmp(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map(el => el[0]);
-}
 
-function getSorting(order, orderBy) {
-  return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
-}
 
 const rows = [
   { id: 'titulo', numeric: false, disablePadding: true, label: 'Título' },
@@ -93,7 +90,7 @@ class EnhancedTableHead extends Component {
                   key={row.id}
                   align={row.numeric ? 'right' : 'left'}
                   padding={row.disablePadding ? 'none' : 'default'}
-                  sortDirection={orderBy === row.id ? order : false}
+                  // sortDirection={orderBy === row.id ? order : false}
                 >
                   <Tooltip
                     title="Sort"
@@ -209,9 +206,21 @@ const styles = theme => ({
 });
 
 
+var socket = io('http://localhost:30000', {rememberTransport: false, transports: ['websocket', 'Flash Socket', 'AJAX long-polling']});
+var TAG = null;
+// function lerTAG() {
+  socket.on('tag', function(data){
+    TAG = data;
+    console.log(data);
+    socket.emit('recive');
+
+  });
+  // socket.disconnect();
+// }
 
 class EnhancedTable extends Component {
   state = {
+    dataatual: null,
     exe_RFID: "",
     mudou: "",
     add: false,
@@ -220,9 +229,10 @@ class EnhancedTable extends Component {
     order: 'asc',
     orderBy: 'calories',
     selected: [],
-    data: [
-      createData('Redes de Computadores', 'Andrew S Tanenbaum, David Wetheral', 5, 'Pearson', 2011),
-      createData('Inteligencia artificial', 'George F Luger', '6', 'Pearson', 2011),
+    usu_ExemplarPosse: [],
+    data: [],//criar(this.props.usu.usu_ExemplarPosse),//[
+      // createData('Redes de Computadores', 'Andrew S Tanenbaum, David Wetheral', 5, 'Pearson', 2011),
+      // createData('Inteligencia artificial', 'George F Luger', '6', 'Pearson', 2011),
       //createData('Sistemas Operacionais Modernos', 'Andrew S Tanenbaum', 3, 'Pearson', 2009),
       /*createData('Sistemas Digitais principios e aplicacoes', 'Ronald J Tocci, Neal S Widmer, Gregory L Moss', 11, 'Pearson', 2009),
       createData('Compiladores principios tecnicas e ferramentas', 'Alfred V Aho, Monica S Lam, Ravi Sethi, Jeffrey D Ullman', 2, 'Pearson', 2011),
@@ -231,20 +241,9 @@ class EnhancedTable extends Component {
       createData('Planejamento Financeiro', 'Camila Camargo', 2, 'IBPEX', 2007),
       createData('Gestao de Projetos - Administracao 8', 'Rinaldo Jose Barbosa Lima', 7, 'Pearson', 2011),
       createData('Calculo Numerico', 'Neide Maria Bertoldi Franco', 1, 'Pearson', 2008),*/
-    ],
+    //],
     page: 0,
     rowsPerPage: 5,
-  };
-
-  handleRequestSort = (event, property) => {
-    const orderBy = property;
-    let order = 'desc';
-
-    if (this.state.orderBy === property && this.state.order === 'desc') {
-      order = 'asc';
-    }
-
-    this.setState({ order, orderBy });
   };
 
 
@@ -266,14 +265,21 @@ class EnhancedTable extends Component {
   };
 
   handleAdd = () => {
+    console.log(TAG);
     this.setState({
       addLivro: true,
+      exe_RFID: TAG.data,
     });
   }
 
-  handleChangeRowsPerPage = event => {
-    this.setState({ rowsPerPage: event.target.value });
+  handleInputChangeTAG = e => {
+    if(TAG.data !== e.target.value){
+      this.setState({
+        [e.target.name]: TAG.data
+      });
+    }
   };
+
 
   handleInputChange = e => {
     this.setState({
@@ -283,6 +289,7 @@ class EnhancedTable extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
+    // var datas = []
     if (this.state.exe_RFID.trim()){
       console.log("clicou")
       //console.log(getUsuCPF(this.state.usu_CPF));
@@ -295,27 +302,35 @@ class EnhancedTable extends Component {
       if(this.props.exe.exe_RFID !== ''){
         // if(this.state.exe_RFID === this.props.exe.exe_RFID){
           console.log("RFID OK");
-          const novo = createData('Compiladores principios tecnicas e ferramentas', 'Alfred V Aho, Monica S Lam, Ravi Sethi, Jeffrey D Ullman', 2, 'Pearson', 2011);
+          // const novo = createData('Compiladores principios tecnicas e ferramentas', 'Alfred V Aho, Monica S Lam, Ravi Sethi, Jeffrey D Ullman', 2, 'Pearson', 2011);
+          const novo = createData(this.props.exe.exe_Titulo, this.props.exe.exe_Autor, this.props.exe.exe_Edicao, this.props.exe.exe_Editora, this.props.exe.exe_Ano);
           this.setState(state => {
             const data = state.data.push(novo);
           });
+          // this.data;
           // createData(this.props.exe.exe_Titulo, this.props.exe.exe_Autor, this.props.exe.exe_Edicao, this.props.exe.exe_Editora, this.props.exe.exe_Ano)
-          this.handleClose();
+          
           // this.setState({senhaCorreta: true})
           // this.props.history.push("/home");
         // }
       }else{
         console.log("RFID errada");
       }
-      
     }
+    console.log(this.data)
+    var dt =  dateformat((new Date()), "isoDateTime")// .toLocaleString()
+    this.setState({exe_RFID: '', dataatual: dt})
+    console.log('antes do close')
+    console.log(this.state.dataatual);
+    this.handleClose();
   };
 
   addL = (data) => data === 3;
 
   render() {
-    const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    // const { dateFrom, dateTo, revenue} = stat
+    
+    const { dateTo, data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     const addL = this.addL(data.length);
 
@@ -331,18 +346,18 @@ class EnhancedTable extends Component {
                 order={order}
                 orderBy={orderBy}
                 // onSelectAllClick={this.handleSelectAllClick}
-                onRequestSort={this.handleRequestSort}
+                // onRequestSort={this.handleRequestSort}
                 rowCount={data.length}
               />
               <TableBody>
-                {stableSort(data, getSorting(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map(n => {
+                {//stableSort(data, getSorting(order, orderBy))
+                  // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  data.map(n => {
                     return (
                       <TableRow
                         hover
                         tabIndex={-1}
-                        key={n.id}
+                        // key={n.id}
                         //onChange={event => this.handleChangeRows()}
                       >
                         
@@ -368,9 +383,11 @@ class EnhancedTable extends Component {
         <Button variant="contained" 
           color="secondary" 
           // className={classNames(classes.cancela)}>
-          style={{bottom: 20,
-    position: 'fixed',
-    left: 20}}>
+          style={
+            {bottom: 20,
+              position: 'fixed',
+              left: 20}
+        }>
           <DeleteIcon/>
           Cancela
         </Button>
@@ -436,22 +453,22 @@ class EnhancedTable extends Component {
             <Typography gutterBottom>
               Aproxime a tag ao leitor ou digite-a de acordo como está no livro
             </Typography>
-            <CircularProgress  disableShrink />
+            <CircularProgress disableShrink />
           </DialogContent>
             <FormControl variant="outlined" margin="normal">
             <InputLabel htmlFor="formatted-text-mask-input">Número da tag</InputLabel>
             <Input style={{marginRight: 20}}
               name='exe_RFID'
               value={this.state.exe_RFID}
-              onChange={ this.handleInputChange }
-              id="usu_RFID"
+              onChange={ this.handleInputChangeTAG }
+              id="exe_RFID"
               disableUnderline
             />
           </FormControl>
           <Input style={{marginRight: 20}}
               // name='exe_RFID'
               disabled
-              value={this.state.mudou}
+              // value={moment(dateTo).format('YYYY-MM-DD')}
               // onChange={ this.handleInputChange }
               // id="usu_RFID"
               disableUnderline
@@ -481,10 +498,6 @@ class EnhancedTable extends Component {
 }
 
 
-EnhancedTable.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
 const mapDispatchToProps = dispatch => {
   return {
     onFindRFID: stateRFID => {
@@ -498,6 +511,7 @@ const mapDispatchToProps = dispatch => {
 function mapStateToProps(state){
   return {
     exe: state.exes,
+    usu: state.usus,
   }
 }
 

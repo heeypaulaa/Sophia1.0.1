@@ -9,11 +9,13 @@ import { createStore, applyMiddleware } from 'redux';
 import rootUsuReducer from './reducers/rootUsuReducer';
 // import rootExeReducer from './reducers/rootUsuReducer';
 
-import{ fetchAllUsus } from './actions/index';
+import{ fetchAllUsus, fetchAllExes } from './actions/index';
 //import registerServiceWorker from './registerServiceWorker';
 
 const storeUsu = createStore( rootUsuReducer, applyMiddleware(thunk) );
-storeUsu.dispatch(fetchAllUsus());
+console.log("aqui");
+// storeUsu.dispatch(fetchAllUsus());
+// storeUsu.dispatch(fetchAllExes());
 
 //import store from './store';
 

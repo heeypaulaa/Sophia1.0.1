@@ -24,6 +24,9 @@ export default function exeReducer(state = initialState, action) {
 		case DELETE_EXE:
 			return state.filter(exe => exe._id !== action.payload.id);
 		case GET_EXE:
+			console.log("ação");
+			console.log(action.exes);
+			console.log("ação2")
 			return action.exes;	
 		case GET_RFID:
 			console.log("reducer get RFID");

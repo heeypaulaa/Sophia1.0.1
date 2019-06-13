@@ -2,9 +2,9 @@ import { CREATE_USU, DELETE_USU, GET_USU, GET_CPF//, PUT_USU
 } from '../actions/tipos';
 //import { ADD_USU } from '../actions/actionTypes';
 
-const initialState = {
+var initialState = {
    _id: '', 
-	usu_Nome: 'ola', 
+	usu_Nome: '', 
   usu_Mae: '', 
   usu_Nasc: '', 
   usu_Tel: '', 
@@ -38,7 +38,9 @@ export default function usuReducer(state = initialState, action) {
 			return action.usus;
 		case GET_CPF:
 			console.log("reducer get cpf");
-			console.log(action.payload.usu_Nome);
+			console.log(action.payload);
+			initialState = action.payload;
+			console.log(initialState);
 			// result: action.payload
 			// console.log(result);
 			return {
@@ -59,9 +61,11 @@ export default function usuReducer(state = initialState, action) {
 	      usu_Senha: action.payload.usu_Senha, 
 	      usu_PosseQuant: action.payload.usu_PosseQuant, 
 	      usu_ExemplarPosse: action.payload.usu_ExemplarPosse, 
-	      usu_Historico: action.payload.usu_Historico
+	      usu_Historico: action.payload.usu_Historico,
 			};	
 		default:
+			console.log("default");
+			console.log(state);
 		  return state;
 	}
 };
